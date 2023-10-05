@@ -40,15 +40,21 @@ https://templatemo.com/tm-583-festava-live
 -----------------------------------------*/
 :root {
   --white-color:                  #ffffff;
+  --offwhite-color:                   #FAF9F6;
   --primary-color:                #007CC7;
   --secondary-color:              #4DA8DA;
   --section-bg-color:             #f0f8ff;
   --custom-btn-bg-color:          #007CC7;
   --custom-btn-bg-hover-color:    #4DA8DA;
+  --custom-btn-bg-green:          #50C878;
+  --custom-btn-bg-red:            #EE4B2B;
+  --custom-btn-bg-purple:         #BF40BF;
   --dark-color:                   #000000;
   --p-color:                      #717275;
   --border-color:                 #203647;
   --link-hover-color:             #4DA8DA;
+  
+  --background-dark-color:        #111111;
 
   --body-font-family:             'Outfit', sans-serif;
 
@@ -330,6 +336,7 @@ strong {
   line-height: normal;
   transition: all 0.3s;
   padding: 10px 20px;
+  text-transform: uppercase;
 }
 
 .custom-btn:hover {
@@ -796,6 +803,43 @@ strong {
 
 .projects-thumb .link-fx-1:hover {
   color: var(--link-hover-color);
+}
+
+.custom-card {
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.card-project-title {
+  font-size: 36px;
+}
+
+.custom-btn-showcase {
+  background-color: var(--secondary-color); /* Customize the color for Showcase button */
+}
+
+.custom-btn-download {
+  background-color: var(--custom-btn-bg-green); /* Customize the color for Download button */
+}
+
+.custom-btn-more {
+  background-color: var(--custom-btn-bg-purple); /* Customize the color for More button */
+}
+
+.custom-btn-showcase:hover {
+  background-color: var(--primary-color); /* Customize the color for More button */
+}
+
+.custom-btn-download:hover {
+  background-color: var(--bs-green); /* Customize the hover color for Download button */
+}
+
+.custom-btn-more:hover {
+  background-color: var(--bs-purple); /* Customize the hover color for More button */
 }
 
 
