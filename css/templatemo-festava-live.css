@@ -79,7 +79,7 @@ https://templatemo.com/tm-583-festava-live
 
 body {
   background-color: var(--white-color);
-  font-family: var(--body-font-family); 
+  font-family: var(--body-font-family), serif; 
 }
 
 
@@ -402,7 +402,7 @@ strong {
 }
 
 .sticky-wrapper.is-sticky .navbar {
-  background-color: var(--dark-color);
+  background-color: rgba(0,0,0,80%);
 }
 
 .navbar {
@@ -459,9 +459,6 @@ strong {
 
 .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon:before,
 .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon:after {
-  transition: top 300ms 50ms ease, -webkit-transform 300ms 350ms ease;
-  transition: top 300ms 50ms ease, transform 300ms 350ms ease;
-  transition: top 300ms 50ms ease, transform 300ms 350ms ease, -webkit-transform 300ms 350ms ease;
   top: 0;
 }
 
@@ -484,9 +481,6 @@ strong {
 
 .navbar-toggler .navbar-toggler-icon:before,
 .navbar-toggler .navbar-toggler-icon:after {
-  transition: top 300ms 350ms ease, -webkit-transform 300ms 50ms ease;
-  transition: top 300ms 350ms ease, transform 300ms 50ms ease;
-  transition: top 300ms 350ms ease, transform 300ms 50ms ease, -webkit-transform 300ms 50ms ease;
   position: absolute;
   right: 0;
   left: 0;
@@ -512,7 +506,7 @@ strong {
   position: relative;
   overflow: hidden;
   padding-top: 100px;
-  height: calc(100vh - 51px);
+  height: calc(100vh);
 }
 
 .hero-section small {
@@ -586,7 +580,6 @@ strong {
   TICKET               
 -----------------------------------------*/
 .ticket-section {
-  background-image: url('../images/nicholas-green-unsplash-blur.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -868,7 +861,6 @@ strong {
   border-radius: var(--border-radius-large);
   color: var(--white-color);
   font-size: var(--p-font-size);
-  font-weight: var(--font-weight-medium);
   transition: all 0.3s;
   margin-bottom: 0;
 }
@@ -891,7 +883,6 @@ strong {
 
 .site-footer-top {
   background-color: var(--secondary-color);
-  background-image: url('../images/nainoa-shizuru-NcdG9mK3PBY-unsplash.jpg');
   background-repeat: no-repeat;
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -1079,4 +1070,3 @@ strong {
     font-size: 20px;
   }
 }
-
