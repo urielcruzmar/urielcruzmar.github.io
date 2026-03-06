@@ -446,6 +446,53 @@
     color: var(--muted2);
   }
 
+  /* Video thumbnails in experience */
+  .exp-videos {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .exp-video {
+    position: relative;
+    width: 100%; max-width: 420px;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .exp-video img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease, filter 0.3s ease;
+    filter: brightness(0.7) saturate(0.7);
+  }
+  .exp-video:hover img {
+    transform: scale(1.04);
+    filter: brightness(0.85) saturate(1);
+  }
+  .exp-video-play {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.2s;
+  }
+  .exp-video-play svg {
+    width: 52px; height: 52px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+    transition: transform 0.2s;
+  }
+  .exp-video:hover .exp-video-play svg { transform: scale(1.1); }
+  .exp-video-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(to top, rgba(7,9,13,0.92), transparent);
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted2);
+  }
+
   /* Projects */
   #projects { background: var(--bg); }
 
@@ -457,7 +504,7 @@
 
   .project-card {
     background: var(--surface);
-    padding: 40px;
+    padding: 0;
     position: relative;
     overflow: hidden;
     transition: all 0.3s;
@@ -465,12 +512,33 @@
     color: inherit;
     display: block;
   }
+  .project-card-img {
+    width: 100%; aspect-ratio: 16/9;
+    overflow: hidden;
+    position: relative;
+  }
+  .project-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+    filter: brightness(0.7) saturate(0.8);
+  }
+  .project-card:hover .project-card-img img {
+    transform: scale(1.04);
+    filter: brightness(0.85) saturate(1);
+  }
+  .project-card-body {
+    padding: 28px 32px 32px;
+  }
   .project-card:hover { background: #0f1820; }
   .project-card::after {
     content: '↗';
     position: absolute; top: 28px; right: 32px;
-    font-size: 18px; color: var(--muted);
+    font-size: 18px; color: rgba(255,255,255,0.5);
     transition: all 0.3s;
+    z-index: 2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
   }
   .project-card:hover::after { color: var(--accent); transform: translate(4px, -4px); }
 
@@ -743,6 +811,13 @@
           <li>Authored technical design documentation (TDD) for modular and reusable gameplay systems</li>
         </ul>
         <div class="exp-project">Current: <span>Unannounced AAA</span> · Past: Tomb Raider: Legacy of Atlantis</div>
+        <div class="exp-videos">
+          <a href="https://www.youtube.com/watch?v=n6JxVxSHjqE" target="_blank" class="exp-video">
+            <img src="https://img.youtube.com/vi/n6JxVxSHjqE/maxresdefault.jpg" alt="Tomb Raider: Legacy of Atlantis">
+            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+            <div class="exp-video-label">Tomb Raider: Legacy of Atlantis</div>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -760,6 +835,13 @@
           <li>Provided technical mentorship and GAS expertise to the development team</li>
         </ul>
         <div class="exp-project">Projects: Unannounced AAA · <span>The Occultist (Support)</span></div>
+        <div class="exp-videos">
+          <a href="https://www.youtube.com/watch?v=cvD76zgljNY" target="_blank" class="exp-video">
+            <img src="https://img.youtube.com/vi/cvD76zgljNY/maxresdefault.jpg" alt="The Occultist">
+            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+            <div class="exp-video-label">The Occultist</div>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -776,6 +858,18 @@
           <li>Integrated essential plugins for gameplay and animation while maintaining feature parity</li>
         </ul>
         <div class="exp-project">Projects: <span>Current Anima</span></div>
+        <div class="exp-videos">
+          <a href="https://www.youtube.com/watch?v=aIqbflh1m3U" target="_blank" class="exp-video">
+            <img src="https://img.youtube.com/vi/aIqbflh1m3U/maxresdefault.jpg" alt="Current Anima Gameplay">
+            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+            <div class="exp-video-label">Current Anima — Gameplay</div>
+          </a>
+          <a href="https://www.youtube.com/watch?v=kGrSYJymiM4" target="_blank" class="exp-video">
+            <img src="https://img.youtube.com/vi/kGrSYJymiM4/maxresdefault.jpg" alt="Current Anima Trailer">
+            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+            <div class="exp-video-label">Current Anima — Trailer</div>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -792,6 +886,13 @@
           <li>Designed environments considering spatial dynamics, aesthetics, and game flow</li>
         </ul>
         <div class="exp-project">Projects: <span>Tears of Elara</span></div>
+        <div class="exp-videos">
+          <a href="https://www.youtube.com/watch?v=A-7O4F_XoZs" target="_blank" class="exp-video">
+            <img src="https://img.youtube.com/vi/A-7O4F_XoZs/maxresdefault.jpg" alt="Tears of Elara">
+            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+            <div class="exp-video-label">Tears of Elara</div>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -890,46 +991,66 @@
 
     <a href="https://urielcruzmar.itch.io/crypt-raider" target="_blank" class="project-card reveal">
       <div class="glow"></div>
-      <div class="project-cat">Mini Game · UE5</div>
-      <div class="project-name">Crypt Raider</div>
-      <p class="project-desc">Explore and uncover the secrets of a hidden crypt. Solve puzzles in a mysterious setting and unlock new chambers.</p>
-      <div class="project-tech">
-        <span class="tech-tag">UE5</span>
-        <span class="tech-tag">C++</span>
+      <div class="project-card-img">
+        <img src="images/portfolio/CryptRaider.png" alt="Crypt Raider">
+      </div>
+      <div class="project-card-body">
+        <div class="project-cat">Mini Game · UE5</div>
+        <div class="project-name">Crypt Raider</div>
+        <p class="project-desc">Explore and uncover the secrets of a hidden crypt. Solve puzzles in a mysterious setting and unlock new chambers.</p>
+        <div class="project-tech">
+          <span class="tech-tag">UE5</span>
+          <span class="tech-tag">C++</span>
+        </div>
       </div>
     </a>
 
     <a href="https://urielcruzmar.itch.io/obstacleassault" target="_blank" class="project-card reveal" style="transition-delay: 0.1s;">
       <div class="glow"></div>
-      <div class="project-cat">Mini Game · UE5</div>
-      <div class="project-name">Obstacle Assault</div>
-      <p class="project-desc">3D low-poly pirate platformer. Navigate treacherous obstacles to collect treasure maps and reach the captain.</p>
-      <div class="project-tech">
-        <span class="tech-tag">UE5</span>
-        <span class="tech-tag">C++</span>
+      <div class="project-card-img">
+        <img src="images/portfolio/ObstacleAssault.png" alt="Obstacle Assault">
+      </div>
+      <div class="project-card-body">
+        <div class="project-cat">Mini Game · UE5</div>
+        <div class="project-name">Obstacle Assault</div>
+        <p class="project-desc">3D low-poly pirate platformer. Navigate treacherous obstacles to collect treasure maps and reach the captain.</p>
+        <div class="project-tech">
+          <span class="tech-tag">UE5</span>
+          <span class="tech-tag">C++</span>
+        </div>
       </div>
     </a>
 
     <a href="https://urielcruzmar.itch.io/marsmarine" target="_blank" class="project-card reveal">
       <div class="glow"></div>
-      <div class="project-cat">Mini Game · UE5</div>
-      <div class="project-name">Mars Marine</div>
-      <p class="project-desc">Defend ancient ruins on a fantasy Mars from waves of alien invaders. Survive using strategic positioning and healing pick-ups.</p>
-      <div class="project-tech">
-        <span class="tech-tag">UE5</span>
-        <span class="tech-tag">Blueprints</span>
+      <div class="project-card-img">
+        <img src="images/portfolio/MarsMarine.png" alt="Mars Marine">
+      </div>
+      <div class="project-card-body">
+        <div class="project-cat">Mini Game · UE5</div>
+        <div class="project-name">Mars Marine</div>
+        <p class="project-desc">Defend ancient ruins on a fantasy Mars from waves of alien invaders. Survive using strategic positioning and healing pick-ups.</p>
+        <div class="project-tech">
+          <span class="tech-tag">UE5</span>
+          <span class="tech-tag">Blueprints</span>
+        </div>
       </div>
     </a>
 
     <a href="https://www.amazon.es/dp/1837639760" target="_blank" class="project-card reveal" style="transition-delay: 0.1s;">
       <div class="glow"></div>
-      <div class="project-cat">Technical Review · Book</div>
-      <div class="project-name">Architectural Visualization in UE5</div>
-      <p class="project-desc">Technical reviewer for this published book on architectural visualization workflows in Unreal Engine 5.</p>
-      <div class="project-tech">
-        <span class="tech-tag">UE5</span>
-        <span class="tech-tag">ArchViz</span>
-        <span class="tech-tag">Published</span>
+      <div class="project-card-img">
+        <img src="images/portfolio/AVUE5Review.jpg" alt="Architectural Visualization in UE5">
+      </div>
+      <div class="project-card-body">
+        <div class="project-cat">Technical Review · Book</div>
+        <div class="project-name">Architectural Visualization in UE5</div>
+        <p class="project-desc">Technical reviewer for this published book on architectural visualization workflows in Unreal Engine 5.</p>
+        <div class="project-tech">
+          <span class="tech-tag">UE5</span>
+          <span class="tech-tag">ArchViz</span>
+          <span class="tech-tag">Published</span>
+        </div>
       </div>
     </a>
 
@@ -960,7 +1081,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
@@ -1020,7 +1141,4 @@
   });
 
   // Active nav link highlight
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-
-  window.addEventListener('scroll', () =>
+  const sect
