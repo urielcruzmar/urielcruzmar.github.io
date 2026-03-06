@@ -1,679 +1,1026 @@
 <!DOCTYPE html>
-<html class="no-js ss-preload" lang="en">
+<html lang="en">
 <head>
+<meta charset="utf-8">
+<title>Uriel Cruz — Technical Designer UE5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Uriel Cruz — Technical Designer specializing in Unreal Engine 5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07090d;
+    --surface: #0d1117;
+    --surface2: #141b24;
+    --border: #1c2535;
+    --accent: #7eb8f7;
+    --accent2: #4a9eff;
+    --text: #edf2f8;
+    --muted: #3a4a5e;
+    --muted2: #6b8099;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
 
-    <!--- basic page needs
-    ================================================== -->
-    <meta charset="utf-8">
-    <title>Uriel Cruz</title>
-    <meta name="description" content="Uriel Cruz Portfolio">
-    <meta name="author" content="Uriel Cruz">
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <!-- mobile specific metas
-    ================================================== -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  html { scroll-behavior: smooth; }
 
-    <!-- CSS
-    ================================================== -->
-    <link rel="stylesheet" href="css/vendor.css">
-    <link rel="stylesheet" href="css/styles.css">
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    overflow-x: hidden;
 
-    <!-- favicons
-    ================================================== -->
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
+  }
 
+  /* Custom cursor */
+  #cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
+    transform: translate(-50%, -50%);
+  }
+  #cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(126,184,247,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.08s ease;
+  }
+  body:hover #cursor { opacity: 1; }
+  a:hover ~ #cursor, a:hover #cursor { transform: translate(-50%,-50%) scale(2.5); }
+
+  /* Global container */
+  .container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; width: 100%;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    backdrop-filter: blur(10px);
+  }
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .nav-logo {
+    font-size: 20px; font-weight: 800; letter-spacing: -0.5px;
+    color: var(--text); text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted2); text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* Hero */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: flex-end;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-inner {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+    position: relative;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(126,184,247,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(74,158,255,0.03) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-counter {
+    position: absolute; top: 50%; right: 0;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--muted);
+    writing-mode: vertical-rl;
+    letter-spacing: 3px;
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 32px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 32px; height: 1px; background: var(--accent);
+  }
+
+  .hero-title {
+    font-size: clamp(52px, 8vw, 110px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    margin-bottom: 40px;
+  }
+
+  .hero-title .line { overflow: hidden; display: block; }
+  .hero-title .line span {
+    display: block;
+    transform: translateY(110%);
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-title .line:nth-child(1) span { animation-delay: 0.1s; }
+  .hero-title .line:nth-child(2) span { animation-delay: 0.2s; }
+  .hero-title .line:nth-child(3) span { animation-delay: 0.3s; color: var(--muted); }
+
+  @keyframes slideUp {
+    to { transform: translateY(0); }
+  }
+
+  .hero-desc {
+    font-family: var(--font-mono);
+    font-size: 13px; line-height: 1.8;
+    color: var(--muted2);
+    max-width: 480px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.6s forwards;
+  }
+
+  .hero-cta {
+    display: flex; gap: 16px; align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--accent);
+    color: #000;
+    font-family: var(--font-mono);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+
+  .btn-secondary {
+    padding: 14px 32px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted2);
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* Marquee strip */
+  .marquee-strip {
+    background: var(--accent);
+    padding: 12px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-flex; gap: 0;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-family: var(--font-mono);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: #000;
+    padding: 0 40px;
+  }
+  .marquee-sep { color: rgba(0,0,0,0.3); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Sections */
+  section { padding: 120px 0; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--accent);
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 64px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 80px;
+    height: 1px; background: var(--accent); opacity: 0.4;
+  }
+
+  /* About */
+  #about { background: var(--surface); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-heading {
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 32px;
+  }
+
+  .about-text {
+    font-family: var(--font-mono);
+    font-size: 13px; line-height: 1.9;
+    color: var(--muted2);
+    margin-bottom: 24px;
+  }
+
+  .skills-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-top: 40px;
+  }
+  .skill-pill {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 1px;
+    color: var(--muted2);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .skill-pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(126,184,247,0.03); }
+
+  .stat-block {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; margin-bottom: 40px;
+  }
+  .stat {
+    background: var(--surface2);
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.4s ease;
+  }
+  .stat:hover::before { height: 100%; }
+  .stat-num {
+    font-size: 48px; font-weight: 800;
+    letter-spacing: -2px; color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  /* Experience */
+  #experience { background: var(--bg); }
+
+  .exp-list { width: 100%; }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    transition: all 0.3s;
+  }
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+
+  .exp-item::before {
+    content: '';
+    position: absolute; left: 0; top: 0;
+    width: 0; height: 100%;
+    background: rgba(126,184,247,0.02);
+    transition: width 0.4s ease;
+  }
+  .exp-item:hover::before { width: 100%; }
+
+  .exp-date {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--muted); letter-spacing: 1px;
+    padding-top: 6px;
+  }
+
+  .exp-company {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .exp-company a { color: inherit; text-decoration: none; transition: color 0.2s; }
+  .exp-company a:hover { color: var(--accent); }
+
+  .exp-badge {
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 3px 8px;
+    background: rgba(126,184,247,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(126,184,247,0.2);
+  }
+
+  .exp-role {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--muted2); letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .exp-bullets li {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--muted2); line-height: 1.6;
+    padding-left: 16px; position: relative;
+  }
+  .exp-bullets li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent); font-size: 10px;
+  }
+
+  .exp-project {
+    margin-top: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .exp-project span { color: var(--accent2); }
+
+  /* Skills */
+  #skills { background: var(--surface); }
+
+  .skills-visual {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .skill-card {
+    background: var(--surface2);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .skill-card:hover { transform: translateY(-4px); background: #1a2333; }
+
+  .skill-card-icon {
+    font-size: 28px; margin-bottom: 16px;
+  }
+
+  .skill-card-title {
+    font-size: 16px; font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .skill-tag {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 1px;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--muted2);
+  }
+
+  /* Projects */
+  #projects { background: var(--bg); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .project-card:hover { background: #0f1820; }
+  .project-card::after {
+    content: '↗';
+    position: absolute; top: 28px; right: 32px;
+    font-size: 18px; color: var(--muted);
+    transition: all 0.3s;
+  }
+  .project-card:hover::after { color: var(--accent); transform: translate(4px, -4px); }
+
+  .project-cat {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px;
+  }
+
+  .project-name {
+    font-size: 24px; font-weight: 700; letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+
+  .project-desc {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--muted2); line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .project-tech {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .tech-tag {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 1px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .project-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .project-card.featured .project-name { font-size: 32px; }
+
+  /* Contact */
+  #contact {
+    background: var(--surface);
+    text-align: center;
+  }
+  .contact-big {
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 800; letter-spacing: -3px;
+    line-height: 0.95;
+    margin-bottom: 40px;
+  }
+  .contact-big em { font-style: normal; color: var(--muted); }
+
+  .contact-links {
+    display: flex; gap: 32px; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 48px;
+  }
+  .contact-link {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted2); text-decoration: none;
+    transition: color 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .contact-link:hover { color: var(--accent); }
+
+  /* Footer */
+  footer {
+    background: var(--bg);
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--muted); letter-spacing: 1px;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .js-ready .reveal {
+    opacity: 0; transform: translateY(30px);
+  }
+  .js-ready .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Interactive glow on hover for project cards */
+  .project-card .glow {
+    position: absolute;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(126,184,247,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s;
+    opacity: 0;
+  }
+  .project-card:hover .glow { opacity: 1; }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .nav-inner { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .container { padding: 0 24px; }
+    .hero-inner { padding: 0 24px 60px; }
+    section { padding: 80px 0; }
+    .hero-counter { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .exp-item { grid-template-columns: 1fr; gap: 8px; }
+    .skills-visual { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+    footer .container { flex-direction: column; gap: 16px; text-align: center; }
+    .stat-block { grid-template-columns: 1fr 1fr; }
+  }
+</style>
 </head>
+<body>
 
-<body id="top">
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Uriel<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
 
-    <!-- # preloader
-    ================================================== -->
-    <div id="preloader">
-        <div id="loader">
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-inner">
+    <div class="hero-counter">Prague · Czech Republic</div>
+    <div class="hero-content">
+      <div class="hero-tag">Technical Designer · UE5</div>
+    <h1 class="hero-title">
+      <span class="line"><span>Uriel</span></span>
+      <span class="line"><span>Cruz</span></span>
+      <span class="line"><span>Game Dev</span></span>
+    </h1>
+    <p class="hero-desc">
+      Specialized in Unreal Engine 5 — C++, Blueprints & GAS.<br>
+      Bridging design and engineering to build unforgettable gameplay.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Get in touch ↓</a>
+      <a href="files/URIEL_CRUZ_CV.pdf" class="btn-secondary" download>Download CV</a>
+    </div>
+    </div><!-- end hero-content -->
+  </div><!-- end hero-inner -->
+</section>
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">Unreal Engine 5</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">C++ / Blueprints</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Gameplay Ability System</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Motion Matching</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Boss AI Design</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Combat Systems</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Technical Level Design</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Unreal Engine 5</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">C++ / Blueprints</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Gameplay Ability System</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Motion Matching</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Boss AI Design</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Combat Systems</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Technical Level Design</span><span class="marquee-item marquee-sep">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+  <div class="section-label">01 — About</div>
+  <div class="about-grid">
+    <div class="reveal">
+      <h2 class="about-heading">Gameplay<br>Architect</h2>
+      <p class="about-text">
+        Technical Designer with a proven track record in AAA development. Specialized in Unreal Engine 5 — designing and shipping complex combat systems, boss AI, and advanced locomotion with Motion Matching.
+      </p>
+      <p class="about-text">
+        My work bridges design vision and technical execution — from rapid prototype to polished shipping-ready feature. Currently at GRIP Studios (Prague), working on an unannounced AAA title.
+      </p>
+      <div style="margin-top: 32px;">
+        <div class="skills-grid">
+          <div class="skill-pill">Technical Design</div>
+          <div class="skill-pill">Unreal Engine 4/5</div>
+          <div class="skill-pill">C++ & Blueprints</div>
+          <div class="skill-pill">Gameplay Ability System</div>
+          <div class="skill-pill">Combat Systems</div>
+          <div class="skill-pill">Motion Matching</div>
+          <div class="skill-pill">Boss AI Design</div>
+          <div class="skill-pill">Level Design</div>
         </div>
+      </div>
     </div>
 
-
-    <!-- # page wrap
-    ================================================== -->
-    <div class="s-pagewrap">
-
-        <div class="circles">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+    <div class="reveal" style="transition-delay: 0.15s;">
+      <div class="stat-block">
+        <div class="stat">
+          <div class="stat-num">5<span>+</span></div>
+          <div class="stat-label">Years experience</div>
         </div>
-
-
-        <!-- ## site header 
-        ================================================== -->
-        <header class="s-header">
-
-            <div class="header-mobile">
-                <span class="mobile-home-link"><a href="index.html">Uriel.</a></span>
-                <a class="mobile-menu-toggle" href="#0"><span>Menu</span></a>
-            </div>
-
-            <div class="row wide main-nav-wrap">
-                <nav class="column lg-12 main-nav">
-                    <ul>
-                        <li><a href="index.html" class="home-link">Uriel.</a></li>
-                        <li class="current"><a href="#intro" class="smoothscroll">Intro</a></li>
-                        <li><a href="#about" class="smoothscroll">About</a></li>
-                        <li><a href="#works" class="smoothscroll">Projects</a></li>
-                        <li><a href="#contact" class="smoothscroll">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
-
-        </header> <!-- end s-header -->
-
-
-        <!-- ## main content
-        ==================================================- -->
-        <main class="s-content">
-
-
-            <!-- ### intro
-            ================================================== -->
-            <section id="intro" class="s-intro target-section">
-                
-                <div class="row intro-content wide">
-
-                    <div class="column">
-                        <div class="text-pretitle with-line">
-                            Uriel Cruz
-                        </div>
-
-                        <h1 class="text-huge-title">
-                            Tech Designer (UE5)<br>
-                            Game Dev<br>
-                        </h1>
-                    </div>
-
-                    <ul class="intro-social">
-                        <li><a href="https://www.linkedin.com/in/urielcruz/">LinkedIn</a></li>
-                        <li><a href="https://github.com/urielcruzmar">GitHub</a></li>
-                        <li><a href="https://urielcruzmar.itch.io/">itch.io</a></li>
-                    </ul>
-
-                </div> <!-- end intro content -->
-
-                <a href="#about" class="intro-scrolldown smoothscroll">
-                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 21.883l-6.235-7.527-.765.644 7.521 9 7.479-9-.764-.645-6.236 7.529v-21.884h-1v21.883z"/></svg>
-                </a>
-
-            </section> <!-- end s-intro -->
-
-
-            <!-- ### about
-            ================================================== -->
-            <section id="about" class="s-about target-section">
-                
-                <div class="row about-info wide" data-animate-block>
-
-                    <div class="column lg-4 md-12 about-info__pic-block">
-                        <img src="images/about-photo.png" 
-                             srcset="images/about-photo.png 1x, images/about-photo.png 2x" alt="" class="about-info__pic" data-animate-el>
-                    </div>
-
-                    <div class="column lg-8 md-12">
-                        <div class="about-info__text" >
-                            <h2 class="text-pretitle with-line" data-animate-el>
-                                About
-                            </h2>
-                            <p class="attention-getter" data-animate-el>
-                                Passionate about game design and development, I specialize in UE5.
-                                <br>
-                                With over two years of experience in game development, 
-                                I have honed my skills in C++, Blueprints, and Gameplay Ability System (GAS) 
-                                to design and implement complex game mechanics, systems, and interactive features.
-                                <br>
-                                My expertise bridges the gap between design and engineering, allowing me to prototype, 
-                                iterate, and refine gameplay with a strong technical foundation. I thrive on solving 
-                                technical design challenges, optimizing gameplay systems, and ensuring seamless 
-                                player experiences.
-                                <br>
-                                My goal is to continue learning and growing as a Technical Game Designer, contributing to the creation of innovative and captivating games.
-                            </p>
-                            <a href="files/URIEL_CRUZ_CV.pdf" class="btn btn--medium u-fullwidth" data-animate-el>Download CV</a>
-                        </div>
-                    </div>
-                </div> <!-- about-info -->
-
-
-                <div class="row about-expertise" data-animate-block>
-                    <div class="column lg-12">
-
-                        <h2 class="text-pretitle" data-animate-el>Expertise</h2>
-
-                        <ul class="skills-list h1" data-animate-el>
-                            <li>Technical Game Design</li>
-                            <li>Unreal Engine</li>
-                            <li>Programing</li>
-                            <li>Prototyping</li>
-                        </ul>
-
-                    </div>
-                </div> <!-- end about-expertise -->
-
-
-                <div class="row about-timelines" data-animate-block>
-
-                    <div class="column lg-12">
-
-                        <h2 class="text-pretitle" data-animate-el>
-                            Experience
-                        </h2>
-
-                        <div class="timeline" data-animate-el>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://grip-studios.com" target="_blank">GRIP STUDIOS</a></h4>
-                                    <h5 class="timeline__meta">Technical Designer (UE5)</h5>
-                                    <p class="timeline__timeframe">April 2025 - Present</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    <!--<ul>
-                                        <li></li>
-                                    </ul>-->
-                                    <p>Projects: Unannounced</p>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://daloar.com" target="_blank">DALOAR</a></h4>
-                                    <h5 class="timeline__meta">Technical Designer (UE5)</h5>
-                                    <p class="timeline__timeframe">Dec 2023 - Dec 2024</p>
-                                </div>
-                                <div class="timeline__desc">
-                                   <ul>
-                                       <li>Design and development of motion system with Motion Matching for an undisclosed project in UE5</li>
-                                       <li>Universal environment detection and parkour system</li>
-                                       <li>Design and implement abilities in GAS and merged with combat and quest systems</li>
-                                       <li>Design and creation of game mechanics and environments</li>
-                                       <li>Technical troubleshooting and game optimization</li>
-                                       <li>Technical support and help to The Occultist team</li>
-                                   </ul>
-                                    <p>Projects: Unannounced & <a href="https://theoccultist.com">The Occultist</a></p>
-                                    <div class="row" data-animate-block>
-                                        <div class="column lg-6">
-                                            <div class="video-container">
-                                                <iframe src="https://www.youtube.com/embed/cvD76zgljNY?si=bK6jK3RUwc-cMPjL" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://gamespain.es/listing/orenji-games-2/" target="_blank">Orengi Games</a></h4>
-                                    <h5 class="timeline__meta">Technical Designer (UE5)</h5>
-                                    <p class="timeline__timeframe">Nov 2022 - Jun 2023</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    Blueprint Development:
-                                    <ul>
-                                        <li>Complex logic and functionality</li>
-                                        <li>Character behavior systems and interactive elements</li>
-                                    </ul>
-                                    Level Design:
-                                    <ul>
-                                        <li>Designed environments with spatial dynamics, aesthetics, and game flow in mind</li>
-                                        <li>Developed visually stunning and narrative compelling landscapes</li>
-                                    </ul>
-                                    Feature Implementation:
-                                    <ul>
-                                        <li>Integrated essential functions and plugins</li>
-                                        <li>Customized and developed tools to enhance game mechanics and user experience</li>
-                                    </ul>
-                                    <p>Projects: <a href="https://gamespain.es/listing/tears-of-elara/">Tears Of Elara</a></p>
-                                    <div class="row" data-animate-block>
-                                        <div class="column lg-6">
-                                            <div class="video-container">
-                                                <iframe src="https://www.youtube.com/embed/A-7O4F_XoZs?si=XpYr2Zvg0QhP4nPb" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://hechicer-ia.com" target="_blank">HechicerIA</a></h4>
-                                    <h5 class="timeline__meta">Unreal Engine Developer</h5>
-                                    <p class="timeline__timeframe">Jan 2022 - Mar 2023</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    Blueprint Development:
-                                    <ul>
-                                        <li>Migrating the engine from Unity to Unreal Engine 5</li>
-                                        <li>Programming in Unreal Engine / Plugin configuration and installation</li>
-                                        <li>Training and technical support for the team during the transition</li>
-                                    </ul>
-                                    <p>Projects: <a href="https://hechicer-ia.com/current-anima">Current Anima</a></p>
-                                    <div class="row" data-animate-block>
-                                        <div class="column lg-6">
-                                            <div class="video-container">
-                                                <iframe src="https://www.youtube.com/embed/aIqbflh1m3U?si=iskvHCIiLVDO7B49" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                                            </div>
-                                        </div>
-                                        <div class="column lg-6">
-                                            <div class="video-container">
-                                                <iframe src="https://www.youtube.com/embed/kGrSYJymiM4?si=Kt2eeXcdif6X35Qt" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--<div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://es.nttdata.com" target="_blank">Everis</a></h4>
-                                    <h5 class="timeline__meta">Software Developer (Java)</h5>
-                                    <p class="timeline__timeframe">Oct 2019 - Jun 2020</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    <ul>
-                                        <li>Software Development</li>
-                                        <li>Incident Resolution</li>
-                                        <li>Testing</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://www.verkia.com" target="_blank">Verkia</a></h4>
-                                    <h5 class="timeline__meta">Web Developer</h5>
-                                    <p class="timeline__timeframe">Mar 2019 - Jun 2019</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    <ul>
-                                        <li>Analysis, design, coding, testing and web applications documentation</li>
-                                        <li>Web page design</li>
-                                    </ul>
-                                </div>
-                            </div>-->
-    
-                        </div> <!-- end timeline -->
-
-                    </div> <!-- end column -->
-                    
-                </div>
-                
-                <div class="row about-timelines" data-animate-block>
-                    
-                    <div class="column lg-12">
-
-                        <h2 class="text-pretitle" data-animate-el>
-                            Education
-                        </h2>
-
-                        <div class="timeline" data-animate-el>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://www.tokioschool.com/en/" target="_blank">Tokio School</a></h4>
-                                    <h5 class="timeline__meta">Master in Video Game Programming with Unreal</h5>
-                                    <p class="timeline__timeframe">2020 - 2022</p>
-                                </div>
-                            </div>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://www.tokioschool.com/en/" target="_blank">Tokio School</a></h4>
-                                    <h5 class="timeline__meta">Advanced Course in Video Game Design</h5>
-                                    <p class="timeline__timeframe">2020 - 2022</p>
-                                </div>
-                            </div>
-
-                            <!--<div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://www.eoi.es/es" target="_blank">EOI Business School</a></h4>
-                                    <h5 class="timeline__meta">Java FullStack and Angular Course</h5>
-                                    <p class="timeline__timeframe">2019</p>
-                                </div>
-                            </div>-->
-                            
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title"><a href="https://iespacomolla.es" target="_blank">IES Poeta Paco Mollà</a></h4>
-                                    <h5 class="timeline__meta">Senior Technician in Multiplatform Application Development</h5>
-                                    <p class="timeline__timeframe">2017 - 2019</p>
-                                </div>
-                            </div>
-    
-                        </div> <!-- end timeline -->
-                        
-                    </div> <!-- end column -->
-                    
-                </div> <!-- end about-timelines -->
-
-            </section> <!-- end s-about -->
-
-
-            <!-- ### works
-            ================================================== -->
-            <section id="works" class="s-works target-section">
-
-
-                <div class="row works-portfolio">
-
-                    <div class="column lg-12" data-animate-block>
-
-                        <h2 class="text-pretitle" data-animate-el>
-                            Recent Projects
-                        </h2>
-                        <p class="h1" data-animate-el>
-                            Here are some projects I have done lately. Feel free to check them out.
-                        </p>
-
-                        <h3 class="h2" data-animate-el>
-                            Games
-                        </h3>
-                        <ul class="folio-list row block-lg-one-half block-stack-on-1000">
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-04">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/Loading.jpg"
-                                             srcset="images/portfolio/Loading.jpg 1x"  alt="">
-                                    </div>
-                                    
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Mini Game
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Parkour Game
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="" title="project link" target="_blank">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-03">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/CryptRaider.png"
-                                             srcset="images/portfolio/CryptRaider.png 1x"  alt="">
-                                    </div>
-
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Mini Game
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Crypt Raider
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="https://urielcruzmar.itch.io/crypt-raider" title="project link" target="_blank">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-02">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/ObstacleAssault.png"
-                                             srcset="images/portfolio/ObstacleAssault.png 1x"  alt="">
-                                    </div>
-
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Mini Game
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Obstacle Assault
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="https://urielcruzmar.itch.io/obstacleassault" title="project link" target="_blank">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-01">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/MarsMarine.png"
-                                             srcset="images/portfolio/MarsMarine.png 1x"  alt="">
-                                    </div>
-
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Mini Game
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Mars Marine
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="https://urielcruzmar.itch.io/marsmarine" title="project link" target="_blank">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                        </ul> <!-- end folio-list -->
-
-                        <h3 class="h2" data-animate-el>
-                            Other
-                        </h3>
-                        <ul class="folio-list row block-lg-one-half block-stack-on-1000">
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="https://www.amazon.es/dp/1837639760" target="_blank">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/AVUE5Review.jpg"
-                                             srcset="images/portfolio/AVUE5Review.jpg 1x"  alt="">
-                                    </div>
-
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Technical Review
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Architectural Visualization in Unreal Engine 5
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="https://www.amazon.es/dp/1837639760" title="project link" target="_blank">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="https://loshackersdepaco.com" target="_blank">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/LHDP.png"
-                                             srcset="images/portfolio/LHDP.png 1x"  alt="">
-                                    </div>
-
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Ethical Hacker (2016-2022)
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Los Hackers de Paco
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="https://loshackersdepaco.com" title="project link" target="_blank">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                        </ul> <!-- end folio-list -->
-
-                    </div> <!-- end column -->
-
-
-                    <!-- Modal Templates Popup
-                    -------------------------------------------- -->
-                    <div id="modal-04" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/Loading.jpg" alt="">
-                
-                            <div class="modal-popup__desc">
-                                <h5>Parkour Game</h5>
-                                <p>New mini-game under development</p>
-                                <ul class="modal-popup__cat">
-                                    <li>UE5</li>
-                                    <li>C++</li>
-                                </ul>
-                            </div>
-                
-                            <a href="" class="modal-popup__details" target="_blank">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                    <div id="modal-03" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/CryptRaider.png" alt="">
-
-                            <div class="modal-popup__desc">
-                                <h5>Crypt Raider</h5>
-                                <p>Explore and uncover the secrets of a hidden crypt. Solve puzzles in a mysterious setting. Discover hidden treasures and unlock new chambers. Will you become a legend in 'Crypt Rider'?</p>
-                                <ul class="modal-popup__cat">
-                                    <li>UE5</li>
-                                    <li>C++</li>
-                                </ul>
-                            </div>
-
-                            <a href="https://urielcruzmar.itch.io/crypt-raider" class="modal-popup__details" target="_blank">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                    <div id="modal-02" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/ObstacleAssault.png" alt="">
-
-                            <div class="modal-popup__desc">
-                                <h5>Obstacle Assault</h5>
-                                <p>In 'Obstacle Assault', a 3D lowpoly pirate-themed platformer, players assume the role of a courageous pirate tasked with retrieving elusive treasure maps concealed within bottles, scattered across perilous terrains. Navigating through treacherous obstacles, including bubbling lava and deep waters, demands precision and agility. With each map collected, players inch closer to the captain.</p>
-                                <ul class="modal-popup__cat">
-                                    <li>UE5</li>
-                                    <li>C++</li>
-                                </ul>
-                            </div>
-
-                            <a href="https://urielcruzmar.itch.io/obstacleassault" class="modal-popup__details" target="_blank">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                    <div id="modal-01" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/MarsMarine.png" alt="">
-
-                            <div class="modal-popup__desc">
-                                <h5>Mars Marine</h5>
-                                <p>"Mars Marine" is a thrilling mini game developed as part of the "Unreal Engine Blueprint Game Developer Online Course". It immerses players in a high-stakes scenario on a fantasy Mars, where they must fend off increasingly formidable waves of alien invaders to protect valuable ancient ruins harboring a priceless treasure. Players must strategically engage and defeat the alien threats while also utilizing healing pick-ups scattered throughout the map to survive.</p>
-                                <ul class="modal-popup__cat">
-                                    <li>UE5</li>
-                                    <li>BP</li>
-                                </ul>
-                            </div>
-
-                            <a href="https://urielcruzmar.itch.io/marsmarine" class="modal-popup__details" target="_blank">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                </div> <!-- end works-portfolio -->
-
-            </section> <!-- end s-works -->
-            
-            
-            <!-- ### contact
-            ================================================== -->
-            <section id="contact" class="s-contact target-section">
-
-                <div class="row contact-top">
-                    <div class="column lg-12">
-                        <h2 class="text-pretitle">
-                            Get In Touch
-                        </h2>
-
-                        <p class="h1">
-                            Shoot me a message.
-                        </p>
-                    </div>
-                </div> <!-- end contact-top -->
-
-                <div class="row contact-bottom">
-                    <div class="column lg-3 md-5 tab-6 stack-on-550 contact-block">
-                        <h3 class="text-pretitle">Reach me at</h3>
-                        <p class="contact-links">
-                            <a href="mailto:urielcruzmar@gmail.com" class="mailtoui">urielcruzmar@gmail.com</a> <br>
-                        </p>
-                    </div>
-                    <div class="column lg-4 md-5 tab-6 stack-on-550 contact-block">
-                        <h3 class="text-pretitle">Social</h3>
-                        <ul class="contact-social">
-                            <li><a href="https://www.linkedin.com/in/urielcruz/">LinkedIn</a></li>
-                            <li><a href="https://github.com/urielcruzmar">GitHub</a></li>
-                            <li><a href="https://urielcruzmar.itch.io/">itch.io</a></li>
-                        </ul>
-                    </div>
-                    <div class="column lg-4 md-12 contact-block">
-                        <a href="mailto:urielcruzmar@gmail.com" class="mailtoui btn btn--medium u-fullwidth contact-btn">Say Hello.</a>
-                    </div>
-                </div> <!-- end contact-bottom -->
-
-            </section> <!-- end contact -->
-
-        </main> <!-- end s-content -->
-
-
-        <!-- ## footer
-        ================================================== -->
-        <footer class="s-footer">
-
-            <div class="row">
-                <div class="column ss-copyright">
-                    <span>Uriel Cruz</span>
-                    <span>© 2025</span> 
-                    <span><a href="https://www.styleshout.com/">StyleShout</a></span>
-                </div>
-
-                <div class="ss-go-top">
-                    <a class="smoothscroll" title="Back to Top" href="#top">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 2.206l-6.235 7.528-.765-.645 7.521-9 7.479 9-.764.646-6.236-7.53v21.884h-1v-21.883z"/></svg>
-                    </a>
-                </div>
-            </div>
-
-        </footer> <!-- end s-footer -->
-
-    </div> <!-- end -s-pagewrap -->
-
-
-    <!-- Java Script
-    ================================================== -->
-    <script src="js/plugins.js"></script>
-    <script src="js/main.js"></script>
-
-</body>
-</html>
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Studios</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">AAA</div>
+          <div class="stat-label">Track record</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">UE<span>5</span></div>
+          <div class="stat-label">Specialized</div>
+        </div>
+      </div>
+      <div style="margin-top: 32px;">
+        <div class="section-label" style="margin-bottom: 24px;">Languages</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 12px;">Spanish</span>
+            <span style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase;">Native</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 12px;">English</span>
+            <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted2); letter-spacing: 2px; text-transform: uppercase;">Full Professional</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
+            <span style="font-family: var(--font-mono); font-size: 12px;">French</span>
+            <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase;">Working</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end container -->
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+  <div class="section-label">02 — Experience</div>
+  <div class="exp-list">
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-date">Jan 2024 — Present</div>
+      </div>
+      <div>
+        <div class="exp-company">
+          <a href="https://grip-studios.com" target="_blank">GRIP Studios</a>
+          <span class="exp-badge">Current</span>
+        </div>
+        <div class="exp-role">Technical Designer (UE5) · Prague</div>
+        <ul class="exp-bullets">
+          <li>Designed and scripted complex multi-phase boss fights and enemy AI behavior using C++ and Blueprints</li>
+          <li>Developed high-fidelity gameplay prototypes bridging design vision and technical execution</li>
+          <li>Implemented and optimized core gameplay mechanics ensuring 60+ FPS stability</li>
+          <li>Authored technical design documentation (TDD) for modular and reusable gameplay systems</li>
+        </ul>
+        <div class="exp-project">Current: <span>Unannounced AAA</span> · Past: Tomb Raider: Legacy of Atlantis</div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-date">Apr 2021 — Dec 2023</div>
+      </div>
+      <div>
+        <div class="exp-company"><a href="https://daloar.com" target="_blank">DALOAR</a></div>
+        <div class="exp-role">Technical Designer (UE5) · Spain</div>
+        <ul class="exp-bullets">
+          <li>Architected a production-ready Motion Matching system and context-aware Parkour system</li>
+          <li>Built a modular GAS ability framework, fully replicated for networked gameplay</li>
+          <li>Developed a data-driven movement framework using Data Assets for designer-friendly configuration</li>
+          <li>Provided technical mentorship and GAS expertise to the development team</li>
+        </ul>
+        <div class="exp-project">Projects: Unannounced AAA · <span>The Occultist (Support)</span></div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-date">Oct 2020 — Apr 2021</div>
+      </div>
+      <div>
+        <div class="exp-company"><a href="https://hechicer-ia.com" target="_blank">HechicerIA</a></div>
+        <div class="exp-role">Lead Technical Designer (UE5) · Spain</div>
+        <ul class="exp-bullets">
+          <li>Led full engine migration from Unity to Unreal Engine 5, establishing the new production pipeline</li>
+          <li>Trained development team on UE5 best practices, Blueprint architecture and coding standards</li>
+          <li>Integrated essential plugins for gameplay and animation while maintaining feature parity</li>
+        </ul>
+        <div class="exp-project">Projects: <span>Current Anima</span></div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-date">Aug 2020 — Oct 2020</div>
+      </div>
+      <div>
+        <div class="exp-company"><a href="https://gamespain.es/listing/orenji-games-2/" target="_blank">Orengi Games</a></div>
+        <div class="exp-role">Technical Designer (UE5) · Remote</div>
+        <ul class="exp-bullets">
+          <li>Developed core character behaviors and AI state machines</li>
+          <li>Created custom Editor Utilities to streamline content creation workflow for artists</li>
+          <li>Designed environments considering spatial dynamics, aesthetics, and game flow</li>
+        </ul>
+        <div class="exp-project">Projects: <span>Tears of Elara</span></div>
+      </div>
+    </div>
+
+  </div>
+  </div><!-- end container -->
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+  <div class="section-label">03 — Skills</div>
+  <div class="skills-visual">
+
+    <div class="skill-card reveal">
+      <div class="skill-card-icon">⚙️</div>
+      <div class="skill-card-title">Engines & Programming</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Unreal Engine 4/5</span>
+        <span class="skill-tag">Unity</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">C#</span>
+        <span class="skill-tag">Blueprints</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">SQL</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="transition-delay: 0.1s;">
+      <div class="skill-card-icon">🎮</div>
+      <div class="skill-card-title">Key Technologies</div>
+      <div class="skill-tags">
+        <span class="skill-tag">GAS</span>
+        <span class="skill-tag">Motion Matching</span>
+        <span class="skill-tag">AI Behavior Trees</span>
+        <span class="skill-tag">Physics Simulation</span>
+        <span class="skill-tag">Networking / Replication</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="transition-delay: 0.2s;">
+      <div class="skill-card-icon">✏️</div>
+      <div class="skill-card-title">Design</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Combat Design</span>
+        <span class="skill-tag">Boss Design</span>
+        <span class="skill-tag">Level Design</span>
+        <span class="skill-tag">Modular Systems</span>
+        <span class="skill-tag">Data-Driven Design</span>
+        <span class="skill-tag">TDD Authoring</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="transition-delay: 0.1s;">
+      <div class="skill-card-icon">🛠️</div>
+      <div class="skill-card-title">Tools & Pipeline</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Perforce</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">Jira</span>
+        <span class="skill-tag">RenderDoc</span>
+        <span class="skill-tag">Profiling Tools</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="transition-delay: 0.2s;">
+      <div class="skill-card-icon">🎓</div>
+      <div class="skill-card-title">Education</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Master — Video Game Programming (UE + C++)</span>
+        <span class="skill-tag">Advanced Course — Video Game Design</span>
+        <span class="skill-tag">Senior Tech. — Multiplatform App Dev.</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="transition-delay: 0.3s;">
+      <div class="skill-card-icon">📝</div>
+      <div class="skill-card-title">Also</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Technical Review (Book)</span>
+        <span class="skill-tag">Ethical Hacking (2016-2022)</span>
+        <span class="skill-tag">Engine Migration Leadership</span>
+        <span class="skill-tag">Team Mentoring</span>
+      </div>
+    </div>
+
+  </div>
+  </div><!-- end container -->
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+  <div class="section-label">04 — Projects</div>
+  <div class="projects-grid">
+
+    <a href="https://urielcruzmar.itch.io/crypt-raider" target="_blank" class="project-card reveal">
+      <div class="glow"></div>
+      <div class="project-cat">Mini Game · UE5</div>
+      <div class="project-name">Crypt Raider</div>
+      <p class="project-desc">Explore and uncover the secrets of a hidden crypt. Solve puzzles in a mysterious setting and unlock new chambers.</p>
+      <div class="project-tech">
+        <span class="tech-tag">UE5</span>
+        <span class="tech-tag">C++</span>
+      </div>
+    </a>
+
+    <a href="https://urielcruzmar.itch.io/obstacleassault" target="_blank" class="project-card reveal" style="transition-delay: 0.1s;">
+      <div class="glow"></div>
+      <div class="project-cat">Mini Game · UE5</div>
+      <div class="project-name">Obstacle Assault</div>
+      <p class="project-desc">3D low-poly pirate platformer. Navigate treacherous obstacles to collect treasure maps and reach the captain.</p>
+      <div class="project-tech">
+        <span class="tech-tag">UE5</span>
+        <span class="tech-tag">C++</span>
+      </div>
+    </a>
+
+    <a href="https://urielcruzmar.itch.io/marsmarine" target="_blank" class="project-card reveal">
+      <div class="glow"></div>
+      <div class="project-cat">Mini Game · UE5</div>
+      <div class="project-name">Mars Marine</div>
+      <p class="project-desc">Defend ancient ruins on a fantasy Mars from waves of alien invaders. Survive using strategic positioning and healing pick-ups.</p>
+      <div class="project-tech">
+        <span class="tech-tag">UE5</span>
+        <span class="tech-tag">Blueprints</span>
+      </div>
+    </a>
+
+    <a href="https://www.amazon.es/dp/1837639760" target="_blank" class="project-card reveal" style="transition-delay: 0.1s;">
+      <div class="glow"></div>
+      <div class="project-cat">Technical Review · Book</div>
+      <div class="project-name">Architectural Visualization in UE5</div>
+      <p class="project-desc">Technical reviewer for this published book on architectural visualization workflows in Unreal Engine 5.</p>
+      <div class="project-tech">
+        <span class="tech-tag">UE5</span>
+        <span class="tech-tag">ArchViz</span>
+        <span class="tech-tag">Published</span>
+      </div>
+    </a>
+
+  </div>
+  </div><!-- end container -->
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+  <h2 class="contact-big reveal">
+    Let's build<br><em>something</em><br>great.
+  </h2>
+  <div class="contact-links reveal" style="transition-delay: 0.2s;">
+    <a href="https://www.linkedin.com/in/urielcruz/" target="_blank" class="contact-link">↗ LinkedIn</a>
+    <a href="https://github.com/urielcruzmar" target="_blank" class="contact-link">↗ GitHub</a>
+    <a href="https://urielcruzmar.itch.io/" target="_blank" class="contact-link">↗ itch.io</a>
+  </div>
+  <a href="mailto:urielcruz@proton.me" class="btn-primary reveal" style="transition-delay: 0.3s; display: inline-flex;">Say Hello →</a>
+  </div><!-- end container -->
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center; padding-top:0; padding-bottom:0;">
+    <div class="footer-copy">© 2025 Uriel Cruz — Technical Designer UE5</div>
+    <div class="footer-copy">Prague · Czech Republic</div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
+      cursor.style.background = '#fff';
+      ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+      ring.style.borderColor = 'rgba(255,255,255,0.3)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      cursor.style.background = 'var(--accent)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.borderColor = 'rgba(126,184,247,0.4)';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  document.body.classList.add('js-ready');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+  reveals.forEach(r => observer.observe(r));
+
+  // Project card glow effect
+  document.querySelectorAll('.project-card').forEach(card => {
+    const glow = card.querySelector('.glow');
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      glow.style.left = (e.clientX - rect.left) + 'px';
+      glow.style.top = (e.clientY - rect.top) + 'px';
+    });
+  });
+
+  // Active nav link highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () =>
