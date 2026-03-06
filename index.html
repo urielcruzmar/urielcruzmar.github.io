@@ -117,18 +117,19 @@
     margin: 0 auto;
     padding: 0 48px 80px;
     position: relative;
+    z-index: 3;
   }
 
   .hero-bg {
     position: absolute; inset: 0;
-    background: 
+    background:
       radial-gradient(ellipse 60% 50% at 70% 40%, rgba(126,184,247,0.04) 0%, transparent 70%),
       radial-gradient(ellipse 40% 60% at 20% 80%, rgba(74,158,255,0.03) 0%, transparent 60%);
   }
 
   .hero-grid {
     position: absolute; inset: 0;
-    background-image: 
+    background-image:
       linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
     background-size: 60px 60px;
@@ -750,8 +751,8 @@
     <div class="reveal" style="transition-delay: 0.15s;">
       <div class="stat-block">
         <div class="stat">
-          <div class="stat-num">5<span>+</span></div>
-          <div class="stat-label">Years experience</div>
+          <div class="stat-num">4<span>+</span></div>
+          <div class="stat-label">Years game dev</div>
         </div>
         <div class="stat">
           <div class="stat-num">4</div>
@@ -796,7 +797,7 @@
 
     <div class="exp-item reveal">
       <div>
-        <div class="exp-date">Jan 2024 — Present</div>
+        <div class="exp-date">Apr 2025 — Present</div>
       </div>
       <div>
         <div class="exp-company">
@@ -823,7 +824,7 @@
 
     <div class="exp-item reveal">
       <div>
-        <div class="exp-date">Apr 2021 — Dec 2023</div>
+        <div class="exp-date">Dec 2023 — Dec 2024</div>
       </div>
       <div>
         <div class="exp-company"><a href="https://daloar.com" target="_blank">DALOAR</a></div>
@@ -847,7 +848,7 @@
 
     <div class="exp-item reveal">
       <div>
-        <div class="exp-date">Oct 2020 — Apr 2021</div>
+        <div class="exp-date">Nov 2022 — Jun 2023</div>
       </div>
       <div>
         <div class="exp-company"><a href="https://hechicer-ia.com" target="_blank">HechicerIA</a></div>
@@ -875,7 +876,7 @@
 
     <div class="exp-item reveal">
       <div>
-        <div class="exp-date">Aug 2020 — Oct 2020</div>
+        <div class="exp-date">Jan 2022 — Mar 2023</div>
       </div>
       <div>
         <div class="exp-company"><a href="https://gamespain.es/listing/orenji-games-2/" target="_blank">Orengi Games</a></div>
@@ -1069,7 +1070,7 @@
     <a href="https://github.com/urielcruzmar" target="_blank" class="contact-link">↗ GitHub</a>
     <a href="https://urielcruzmar.itch.io/" target="_blank" class="contact-link">↗ itch.io</a>
   </div>
-  <a href="mailto:urielcruz@proton.me" class="btn-primary reveal" style="transition-delay: 0.3s; display: inline-flex;">Say Hello →</a>
+  <a href="/cdn-cgi/l/email-protection#0e7b7c676b626d7c7b74636f7c4e69636f6762206d6163" class="btn-primary reveal" style="transition-delay: 0.3s; display: inline-flex;">Say Hello →</a>
   </div><!-- end container -->
 </section>
 
@@ -1081,7 +1082,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
@@ -1117,7 +1118,6 @@
     });
   });
 
-  // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   document.body.classList.add('js-ready');
   const observer = new IntersectionObserver(entries => {
@@ -1135,10 +1135,4 @@
     const glow = card.querySelector('.glow');
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
-      glow.style.left = (e.clientX - rect.left) + 'px';
-      glow.style.top = (e.clientY - rect.top) + 'px';
-    });
-  });
-
-  // Active nav link highlight
-  const sect
+      glow.styl
