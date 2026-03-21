@@ -580,6 +580,175 @@
   }
   .project-card.featured .project-name { font-size: 32px; }
 
+  /* Plugins */
+  #plugins { background: var(--surface); }
+
+  .plugins-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+
+  .plugin-card {
+    background: var(--surface2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+  .plugin-card:hover { background: #1a2333; }
+
+  .plugin-card-img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .plugin-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+    filter: brightness(0.75) saturate(0.8);
+  }
+  .plugin-card:hover .plugin-card-img img {
+    transform: scale(1.03);
+    filter: brightness(0.9) saturate(1);
+  }
+
+  /* Placeholder visual when no image */
+  .plugin-card-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .plugin-card-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(126,184,247,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(126,184,247,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .plugin-card-placeholder-label {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--muted);
+    position: relative; z-index: 1;
+  }
+
+  .plugin-card-body {
+    padding: 28px 32px 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .plugin-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 3px 10px;
+    background: rgba(126,184,247,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(126,184,247,0.2);
+    margin-bottom: 20px;
+    width: fit-content;
+  }
+  .plugin-status::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .plugin-engine {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+
+  .plugin-name {
+    font-size: 26px; font-weight: 800;
+    letter-spacing: -0.8px; line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .plugin-tagline {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--muted2); line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .plugin-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 6px;
+    margin-bottom: 28px;
+    flex: 1;
+  }
+  .plugin-features li {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--muted2); line-height: 1.5;
+    padding-left: 16px; position: relative;
+  }
+  .plugin-features li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent); font-size: 10px;
+  }
+
+  .plugin-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+
+  .plugin-tags {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+
+  .plugin-link {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: gap 0.2s;
+  }
+  .plugin-link:hover { gap: 10px; }
+
+  .plugin-link-soon {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted);
+    cursor: default;
+  }
+
+  @media (max-width: 768px) {
+    .plugins-grid { grid-template-columns: 1fr; }
+  }
+
   /* Contact */
   #contact {
     background: var(--surface);
@@ -672,6 +841,7 @@
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li><a href="#plugins">Plugins</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -1054,6 +1224,61 @@
   </div><!-- end container -->
 </section>
 
+<!-- PLUGINS -->
+<section id="plugins">
+  <div class="container">
+  <div class="section-label">05 — Plugins</div>
+  <div class="plugins-grid">
+
+    <div class="plugin-card reveal">
+      <div class="plugin-card-img">
+        <img src="images/portfolio/EnvironmentScanner.png" alt="Environment Scanner plugin debug visualization">
+      </div>
+      <div class="plugin-card-body">
+        <div class="plugin-status">Beta · Live</div>
+        <div class="plugin-engine">UE 5.7 · C++ Plugin</div>
+        <div class="plugin-name">Environment Scanner</div>
+        <p class="plugin-tagline">Pure environment detection for character traversal — no Motion Matching dependency, no GAS, no MotionWarping. Just Engine.</p>
+        <ul class="plugin-features">
+          <li>Front &amp; back ledge detection with top-surface snapping</li>
+          <li>Obstacle classification: Reachable, Gap, Slide, Unreachable</li>
+          <li>Airborne state and lateral wall detection for wall-run</li>
+          <li>Guaranteed horizontal normals — warp-target ready out of the box</li>
+          <li>Drop-in component or static library call from C++ / Blueprint</li>
+          <li>Full debug visualization — all traces visible in-viewport</li>
+        </ul>
+        <div class="plugin-footer">
+          <div class="plugin-tags">
+            <span class="tech-tag">C++</span>
+            <span class="tech-tag">Blueprints</span>
+            <span class="tech-tag">Fab</span>
+          </div>
+          <span class="plugin-link-soon">Coming to Fab ↗</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Future plugins slot -->
+    <div class="plugin-card reveal" style="transition-delay: 0.1s; opacity: 0.4; pointer-events: none;">
+      <div class="plugin-card-placeholder">
+        <span class="plugin-card-placeholder-label">More plugins coming</span>
+      </div>
+      <div class="plugin-card-body">
+        <div class="plugin-engine">UE 5.x · In Development</div>
+        <div class="plugin-name" style="color: var(--muted);">???</div>
+        <p class="plugin-tagline">More tools building on top of the traversal system are in development. Follow for updates.</p>
+        <div class="plugin-footer">
+          <div class="plugin-tags">
+            <span class="tech-tag">TBA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div><!-- end container -->
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
@@ -1077,7 +1302,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
@@ -1128,6 +1353,14 @@
   // Project card glow effect
   document.querySelectorAll('.project-card').forEach(card => {
     const glow = card.querySelector('.glow');
+    if (!glow) return;
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
-      glow.styl
+      glow.style.left = (e.clientX - rect.left) + 'px';
+      glow.style.top  = (e.clientY - rect.top)  + 'px';
+    });
+  });
+
+</script>
+</body>
+</html>
