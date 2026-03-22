@@ -4,7 +4,21 @@
 <meta charset="utf-8">
 <title>Uriel Cruz — Technical Designer UE5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Uriel Cruz — Technical Designer specializing in Unreal Engine 5">
+<meta name="description" content="Uriel Cruz — Technical Designer specializing in Unreal Engine 5. C++, Blueprints & GAS. Currently at GRIP Studios, Prague.">
+
+<!-- Open Graph / Social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Uriel Cruz — Technical Designer UE5">
+<meta property="og:description" content="Technical Designer specializing in Unreal Engine 5 — C++, Blueprints & GAS. Bridging design and engineering to build unforgettable gameplay.">
+<meta property="og:image" content="https://img.youtube.com/vi/n6JxVxSHjqE/maxresdefault.jpg">
+<meta property="og:url" content="https://urielcruz.dev">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Uriel Cruz — Technical Designer UE5">
+<meta name="twitter:description" content="Technical Designer specializing in Unreal Engine 5 — C++, Blueprints & GAS.">
+<meta name="twitter:image" content="https://img.youtube.com/vi/n6JxVxSHjqE/maxresdefault.jpg">
+
+<!-- Favicon (SVG inline data URI — no extra file needed) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2304060b'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-weight='bold' font-size='14' fill='%233d9bff'>[UC]</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -512,11 +526,6 @@
   footer { background: var(--bg); padding: 26px 0; border-top: 1px solid var(--border); }
   .footer-copy { font-family: var(--font-mono); font-size: 9px; color: var(--text4); letter-spacing: 2px; text-transform: uppercase; }
 
-  /* ── REVEAL ── */
-  .reveal { opacity:1; transform:translateY(0); transition: opacity 0.8s ease, transform 0.8s ease; }
-  .js-ready .reveal { opacity:0; transform:translateY(20px); }
-  .js-ready .reveal.visible { opacity:1; transform:translateY(0); }
-
   /* ── GLOW ── */
   .project-card .glow {
     position: absolute; width: 220px; height: 220px;
@@ -526,22 +535,78 @@
   }
   .project-card:hover .glow { opacity: 1; }
 
+  /* ── HAMBURGER MENU ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column; justify-content: center; gap: 5px;
+    width: 36px; height: 36px; cursor: pointer;
+    background: none; border: none; padding: 6px;
+    position: relative; z-index: 200;
+  }
+  .nav-hamburger span {
+    display: block; width: 20px; height: 1px;
+    background: var(--text2); transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); background: var(--accent); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background: var(--accent); }
+
+  .nav-mobile-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(4,6,11,0.97);
+    backdrop-filter: blur(20px);
+    z-index: 150;
+    flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .nav-mobile-overlay.open { opacity: 1; }
+  .nav-mobile-overlay a {
+    font-family: var(--font-display);
+    font-size: 36px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--text2); text-decoration: none;
+    padding: 12px 24px; transition: color 0.2s;
+  }
+  .nav-mobile-overlay a:hover { color: var(--accent); }
+  .nav-mobile-overlay .nav-mobile-divider {
+    width: 40px; height: 1px; background: var(--border2); margin: 8px 0;
+  }
+
+  /* ── ACTIVE NAV ── */
+  .nav-links a.active { color: var(--accent); border-color: var(--border2); background: var(--accent-glow); }
+
+  /* ── HIDE CURSOR ON TOUCH ── */
+  @media (hover: none) {
+    #cursor, #cursor-ring { display: none; }
+  }
+
+  /* ── REVEAL — faster ── */
+  .reveal { opacity:1; transform:translateY(0); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .js-ready .reveal { opacity:0; transform:translateY(20px); }
+  .js-ready .reveal.visible { opacity:1; transform:translateY(0); }
+
   /* ── MOBILE ── */
   @media (max-width: 768px) {
     .nav-inner { padding: 0 20px; }
     .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-mobile-overlay { display: flex; }
     .container { padding: 0 20px; }
     .hero-inner { padding: 0 20px 72px; }
     .hero-coords, .hero-hud-tl, .hero-hud-tr, .hero-hud-bl, .hero-hud-br { display: none; }
     section { padding: 80px 0; }
     .about-grid { grid-template-columns: 1fr; gap: 48px; }
     .exp-item { grid-template-columns: 1fr; gap: 6px; }
-    .skills-visual { grid-template-columns: 1fr; }
+    .skills-visual { grid-template-columns: repeat(2, 1fr); }
     .projects-grid { grid-template-columns: 1fr; }
     .plugins-grid { grid-template-columns: 1fr; }
     .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
     footer .container { flex-direction: column; gap: 10px; text-align: center; }
     .stat-block { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .skills-visual { grid-template-columns: 1fr; }
   }
 
 </style>
@@ -563,8 +628,26 @@
       <li><a href="#plugins">Plugins</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="nav-mobile-overlay" id="mobileNav" role="dialog" aria-label="Navigation">
+  <a href="#about" class="mobile-nav-link">About</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="#experience" class="mobile-nav-link">Experience</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="#skills" class="mobile-nav-link">Skills</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="#projects" class="mobile-nav-link">Projects</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="#plugins" class="mobile-nav-link">Plugins</a>
+  <div class="nav-mobile-divider"></div>
+  <a href="#contact" class="mobile-nav-link">Contact</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -700,7 +783,7 @@
       </div>
       <div>
         <div class="exp-company">
-          <a href="https://grip-studios.com" target="_blank">GRIP Studios</a>
+          <a href="https://grip-studios.com" target="_blank" rel="noopener noreferrer">GRIP Studios</a>
           <span class="exp-badge">Current</span>
         </div>
         <div class="exp-role">Technical Designer (UE5) · Prague</div>
@@ -712,7 +795,7 @@
         </ul>
         <div class="exp-project">Projects: <span>Unannounced AAA · Tomb Raider: Legacy of Atlantis</span></div>
         <div class="exp-videos">
-          <a href="https://www.youtube.com/watch?v=n6JxVxSHjqE" target="_blank" class="exp-video">
+          <a href="https://www.youtube.com/watch?v=n6JxVxSHjqE" target="_blank" rel="noopener noreferrer" class="exp-video">
             <img src="https://img.youtube.com/vi/n6JxVxSHjqE/maxresdefault.jpg" alt="Tomb Raider: Legacy of Atlantis">
             <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
             <div class="exp-video-label">Tomb Raider: Legacy of Atlantis</div>
@@ -726,7 +809,7 @@
         <div class="exp-date">Dec 2023 — Dec 2024</div>
       </div>
       <div>
-        <div class="exp-company"><a href="https://daloar.com" target="_blank">DALOAR</a></div>
+        <div class="exp-company"><a href="https://daloar.com" target="_blank" rel="noopener noreferrer">DALOAR</a></div>
         <div class="exp-role">Technical Designer (UE5) · Spain</div>
         <ul class="exp-bullets">
           <li>Architected a production-ready Motion Matching system and context-aware Parkour system</li>
@@ -736,7 +819,7 @@
         </ul>
         <div class="exp-project">Projects: <span>Unannounced AAA · The Occultist (Support)</span></div>
         <div class="exp-videos">
-          <a href="https://www.youtube.com/watch?v=cvD76zgljNY" target="_blank" class="exp-video">
+          <a href="https://www.youtube.com/watch?v=cvD76zgljNY" target="_blank" rel="noopener noreferrer" class="exp-video">
             <img src="https://img.youtube.com/vi/cvD76zgljNY/maxresdefault.jpg" alt="The Occultist">
             <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
             <div class="exp-video-label">The Occultist</div>
@@ -750,7 +833,7 @@
         <div class="exp-date">Nov 2022 — Jun 2023</div>
       </div>
       <div>
-        <div class="exp-company"><a href="https://hechicer-ia.com" target="_blank">HechicerIA</a></div>
+        <div class="exp-company"><a href="https://hechicer-ia.com" target="_blank" rel="noopener noreferrer">HechicerIA</a></div>
         <div class="exp-role">Lead Technical Designer (UE5) · Spain</div>
         <ul class="exp-bullets">
           <li>Led full engine migration from Unity to Unreal Engine 5, establishing the new production pipeline</li>
@@ -759,7 +842,7 @@
         </ul>
         <div class="exp-project">Projects: <span>Current Anima</span></div>
         <div class="exp-videos">
-          <a href="https://www.youtube.com/watch?v=kGrSYJymiM4" target="_blank" class="exp-video">
+          <a href="https://www.youtube.com/watch?v=kGrSYJymiM4" target="_blank" rel="noopener noreferrer" class="exp-video">
             <img src="https://img.youtube.com/vi/kGrSYJymiM4/maxresdefault.jpg" alt="Current Anima Trailer">
             <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
             <div class="exp-video-label">Current Anima — Trailer</div>
@@ -773,7 +856,7 @@
         <div class="exp-date">Jan 2022 — Mar 2023</div>
       </div>
       <div>
-        <div class="exp-company"><a href="https://gamespain.es/listing/orenji-games-2/" target="_blank">Orengi Games</a></div>
+        <div class="exp-company"><a href="https://gamespain.es/listing/orenji-games-2/" target="_blank" rel="noopener noreferrer">Orengi Games</a></div>
         <div class="exp-role">Technical Designer (UE5) · Remote</div>
         <ul class="exp-bullets">
           <li>Developed core character behaviors and AI state machines</li>
@@ -884,10 +967,10 @@
   <div class="section-label">04 — Projects</div>
   <div class="projects-grid">
 
-    <a href="https://urielcruzmar.itch.io/crypt-raider" target="_blank" class="project-card reveal">
+    <a href="https://urielcruzmar.itch.io/crypt-raider" target="_blank" rel="noopener noreferrer" class="project-card reveal">
       <div class="glow"></div>
       <div class="project-card-img">
-        <img src="images/portfolio/CryptRaider.png" alt="Crypt Raider">
+        <img src="images/portfolio/CryptRaider.png" alt="Crypt Raider" width="600" height="338" loading="lazy">
       </div>
       <div class="project-card-body">
         <div class="project-cat">Mini Game · UE5</div>
@@ -900,10 +983,10 @@
       </div>
     </a>
 
-    <a href="https://urielcruzmar.itch.io/obstacleassault" target="_blank" class="project-card reveal" style="transition-delay: 0.1s;">
+    <a href="https://urielcruzmar.itch.io/obstacleassault" target="_blank" rel="noopener noreferrer" class="project-card reveal" style="transition-delay: 0.1s;">
       <div class="glow"></div>
       <div class="project-card-img">
-        <img src="images/portfolio/ObstacleAssault.png" alt="Obstacle Assault">
+        <img src="images/portfolio/ObstacleAssault.png" alt="Obstacle Assault" width="600" height="338" loading="lazy">
       </div>
       <div class="project-card-body">
         <div class="project-cat">Mini Game · UE5</div>
@@ -916,10 +999,10 @@
       </div>
     </a>
 
-    <a href="https://urielcruzmar.itch.io/marsmarine" target="_blank" class="project-card reveal">
+    <a href="https://urielcruzmar.itch.io/marsmarine" target="_blank" rel="noopener noreferrer" class="project-card reveal">
       <div class="glow"></div>
       <div class="project-card-img">
-        <img src="images/portfolio/MarsMarine.png" alt="Mars Marine">
+        <img src="images/portfolio/MarsMarine.png" alt="Mars Marine" width="600" height="338" loading="lazy">
       </div>
       <div class="project-card-body">
         <div class="project-cat">Mini Game · UE5</div>
@@ -932,10 +1015,10 @@
       </div>
     </a>
 
-    <a href="https://www.amazon.es/dp/1837639760" target="_blank" class="project-card reveal" style="transition-delay: 0.1s;">
+    <a href="https://www.amazon.es/dp/1837639760" target="_blank" rel="noopener noreferrer" class="project-card reveal" style="transition-delay: 0.1s;">
       <div class="glow"></div>
       <div class="project-card-img">
-        <img src="images/portfolio/AVUE5Review.jpg" alt="Architectural Visualization in UE5">
+        <img src="images/portfolio/AVUE5Review.jpg" alt="Architectural Visualization in UE5" width="600" height="338" loading="lazy">
       </div>
       <div class="project-card-body">
         <div class="project-cat">Technical Review · Book</div>
@@ -961,7 +1044,7 @@
 
     <div class="plugin-card reveal">
       <div class="plugin-card-img">
-        <img src="images/portfolio/EnvironmentScanner.png" alt="Environment Scanner plugin debug visualization">
+        <img src="images/portfolio/EnvironmentScanner.png" alt="Environment Scanner plugin debug visualization" width="600" height="338" loading="lazy">
       </div>
       <div class="plugin-card-body">
         <div class="plugin-status">Beta · Live</div>
@@ -1015,59 +1098,96 @@
     Let's build<br><em>something</em><br>great.
   </h2>
   <div class="contact-links reveal" style="transition-delay: 0.2s;">
-    <a href="https://www.linkedin.com/in/urielcruz/" target="_blank" class="contact-link">↗ LinkedIn</a>
-    <a href="https://github.com/urielcruzmar" target="_blank" class="contact-link">↗ GitHub</a>
-    <a href="https://urielcruzmar.itch.io/" target="_blank" class="contact-link">↗ itch.io</a>
+    <a href="https://www.linkedin.com/in/urielcruz/" target="_blank" rel="noopener noreferrer" class="contact-link">↗ LinkedIn</a>
+    <a href="https://github.com/urielcruzmar" target="_blank" rel="noopener noreferrer" class="contact-link">↗ GitHub</a>
+    <a href="https://urielcruzmar.itch.io/" target="_blank" rel="noopener noreferrer" class="contact-link">↗ itch.io</a>
+    <a href="https://www.fab.com/sellers/YosY" target="_blank" rel="noopener noreferrer" class="contact-link">↗ FAB</a>
   </div>
-  <a href="/cdn-cgi/l/email-protection#d0a5a2b9b5bcb3a2a5aa90a0a2bfa4bfbefebdb5" class="btn-primary reveal" style="transition-delay: 0.3s; display: inline-flex;">Say Hello →</a>
+  <a href="mailto:urielcruz@proton.me" class="btn-primary reveal" style="transition-delay: 0.3s; display: inline-flex;">Say Hello →</a>
   </div><!-- end container -->
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="container" style="display:flex; justify-content:space-between; align-items:center; padding-top:0; padding-bottom:0;">
-    <div class="footer-copy">© 2025 Uriel Cruz — Technical Designer UE5</div>
+    <div class="footer-copy">© <span id="footer-year">2025</span> Uriel Cruz — Technical Designer UE5</div>
     <div class="footer-copy">Prague · Czech Republic</div>
   </div>
 </footer>
 
 <script>
-  // ── Custom cursor ──
+  // ── Dynamic year ──
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+  // ── Custom cursor (only on non-touch devices) ──
+  const isTouch = window.matchMedia('(hover: none)').matches;
   const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
+  const ring   = document.getElementById('cursor-ring');
   let mx = 0, my = 0, rx = 0, ry = 0;
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top  = my + 'px';
-  });
-
-  (function animRing() {
-    rx += (mx - rx) * 0.1;
-    ry += (my - ry) * 0.1;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(animRing);
-  })();
-
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.transform = 'translate(-50%,-50%) scale(3)';
-      ring.style.transform = 'translate(-50%,-50%) scale(1.6)';
-      ring.style.borderColor = 'rgba(61,155,255,0.6)';
+  if (!isTouch) {
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
     });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-      ring.style.transform = 'translate(-50%,-50%) scale(1)';
-      ring.style.borderColor = 'rgba(61,155,255,0.35)';
+    (function animRing() {
+      rx += (mx - rx) * 0.1;
+      ry += (my - ry) * 0.1;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%,-50%) scale(3)';
+        ring.style.transform   = 'translate(-50%,-50%) scale(1.6)';
+        ring.style.borderColor = 'rgba(61,155,255,0.6)';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+        ring.style.transform   = 'translate(-50%,-50%) scale(1)';
+        ring.style.borderColor = 'rgba(61,155,255,0.35)';
+      });
     });
-  });
+  }
 
-  // ── Hero canvas particles ──
+  // ── Hamburger menu ──
+  const hamburger  = document.getElementById('hamburger');
+  const mobileNav  = document.getElementById('mobileNav');
+
+  function openMenu() {
+    hamburger.classList.add('open');
+    mobileNav.classList.add('open');
+    mobileNav.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    hamburger.setAttribute('aria-expanded', 'true');
+  }
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    mobileNav.classList.remove('open');
+    document.body.style.overflow = '';
+    hamburger.setAttribute('aria-expanded', 'false');
+    setTimeout(() => { if (!mobileNav.classList.contains('open')) mobileNav.style.display = ''; }, 300);
+  }
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+  // ── Hero canvas particles — optimized ──
   const canvas = document.getElementById('hero-canvas');
-  const ctx = canvas.getContext('2d');
+  const ctx    = canvas.getContext('2d');
   let W, H, particles = [];
+  const isMobile = window.innerWidth < 768;
+  // On mobile: fewer particles, no connecting lines (kills O² cost)
+  const DENSITY   = isMobile ? 18000 : 8000;
+  const MAX_CONN   = isMobile ? 0 : 5;   // max connections per particle
+  const CONN_DIST  = 120;
 
   function resize() {
     W = canvas.width  = canvas.offsetWidth;
@@ -1078,13 +1198,13 @@
 
   function Particle() {
     this.reset = function() {
-      this.x  = Math.random() * W;
-      this.y  = Math.random() * H;
-      this.vx = (Math.random() - 0.5) * 0.3;
-      this.vy = (Math.random() - 0.5) * 0.3 - 0.1;
-      this.size  = Math.random() * 1.5 + 0.3;
-      this.alpha = Math.random() * 0.45 + 0.08;
-      this.life  = 0;
+      this.x       = Math.random() * W;
+      this.y       = Math.random() * H;
+      this.vx      = (Math.random() - 0.5) * 0.3;
+      this.vy      = (Math.random() - 0.5) * 0.3 - 0.1;
+      this.size    = Math.random() * 1.5 + 0.3;
+      this.alpha   = Math.random() * 0.45 + 0.08;
+      this.life    = 0;
       this.maxLife = Math.random() * 400 + 200;
     };
     this.reset();
@@ -1092,13 +1212,14 @@
   }
 
   function initParticles() {
-    const count = Math.floor((W * H) / 8000);
+    const count = Math.min(Math.floor((W * H) / DENSITY), isMobile ? 40 : 120);
     particles = Array.from({ length: count }, () => new Particle());
   }
   initParticles();
 
   function drawParticles() {
     ctx.clearRect(0, 0, W, H);
+    // Draw dots
     particles.forEach(p => {
       p.life++;
       if (p.life > p.maxLife) p.reset();
@@ -1110,18 +1231,23 @@
       ctx.fillStyle = `rgba(61,155,255,${p.alpha * fade})`;
       ctx.fill();
     });
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < 120) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(61,155,255,${0.035 * (1 - dist/120)})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
+    // Draw connections — capped per particle to avoid O² blowup
+    if (MAX_CONN > 0) {
+      for (let i = 0; i < particles.length; i++) {
+        let conns = 0;
+        for (let j = i + 1; j < particles.length && conns < MAX_CONN; j++) {
+          const dx   = particles[i].x - particles[j].x;
+          const dy   = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONN_DIST) {
+            conns++;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(61,155,255,${0.035 * (1 - dist / CONN_DIST)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
         }
       }
     }
@@ -1132,12 +1258,26 @@
   // ── Scroll reveal ──
   const reveals = document.querySelectorAll('.reveal');
   document.body.classList.add('js-ready');
-  const observer = new IntersectionObserver(entries => {
+  const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
     });
   }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(r => observer.observe(r));
+  reveals.forEach(r => revealObserver.observe(r));
+
+  // ── Active nav link on scroll ──
+  const sections  = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-links a');
+  const navObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+  sections.forEach(s => navObserver.observe(s));
 
   // ── Project card glow ──
   document.querySelectorAll('.project-card').forEach(card => {
@@ -1148,6 +1288,51 @@
       glow.style.left = (e.clientX - rect.left) + 'px';
       glow.style.top  = (e.clientY - rect.top)  + 'px';
     });
+  });
+</script>
+
+<!-- Preloader -->
+<style>
+  #preloader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 20px;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  #preloader.hidden { opacity: 0; visibility: hidden; }
+  .preloader-logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px; font-weight: 700; letter-spacing: 4px;
+    color: var(--text);
+  }
+  .preloader-logo span { color: var(--accent); }
+  .preloader-bar-wrap {
+    width: 160px; height: 1px;
+    background: var(--border2); position: relative; overflow: hidden;
+  }
+  .preloader-bar {
+    position: absolute; left: -100%; top: 0; height: 100%;
+    width: 100%; background: var(--accent);
+    animation: loadbar 0.9s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  .preloader-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--text3);
+  }
+  @keyframes loadbar { from { left: -100%; } to { left: 0%; } }
+</style>
+<div id="preloader">
+  <div class="preloader-logo"><span>[</span>UC<span>]</span></div>
+  <div class="preloader-bar-wrap"><div class="preloader-bar"></div></div>
+  <div class="preloader-label">Loading</div>
+</div>
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('preloader').classList.add('hidden');
+    }, 950);
   });
 </script>
 </body>
