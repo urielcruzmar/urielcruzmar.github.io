@@ -2,630 +2,348 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Uriel Cruz — Technical Designer UE5</title>
+<title>Uriel Cruz — Senior Technical Designer, UE5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Uriel Cruz — Technical Designer specializing in Unreal Engine 5. C++, Blueprints & GAS. Currently at GRIP Studios, Prague.">
+<meta name="description" content="Uriel Cruz — Senior Technical Designer specializing in Unreal Engine 5. C++, Blueprints & GAS. Currently at GRIP Studios, Prague.">
 
-<!-- Open Graph / Social sharing -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Uriel Cruz — Technical Designer UE5">
-<meta property="og:description" content="Technical Designer specializing in Unreal Engine 5 — C++, Blueprints & GAS. Bridging design and engineering to build unforgettable gameplay.">
+<meta property="og:title" content="Uriel Cruz — Senior Technical Designer, UE5">
+<meta property="og:description" content="Senior Technical Designer specializing in Unreal Engine 5 — C++, Blueprints & GAS. Feature ownership, 3Cs and boss/combat design across AA & AAA titles.">
 <meta property="og:image" content="https://img.youtube.com/vi/n6JxVxSHjqE/maxresdefault.jpg">
 <meta property="og:url" content="https://urielcruz.dev">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Uriel Cruz — Technical Designer UE5">
-<meta name="twitter:description" content="Technical Designer specializing in Unreal Engine 5 — C++, Blueprints & GAS.">
+<meta name="twitter:title" content="Uriel Cruz — Senior Technical Designer, UE5">
+<meta name="twitter:description" content="Senior Technical Designer specializing in Unreal Engine 5 — C++, Blueprints & GAS.">
 <meta name="twitter:image" content="https://img.youtube.com/vi/n6JxVxSHjqE/maxresdefault.jpg">
 
-<!-- Favicon (SVG inline data URI — no extra file needed) -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2304060b'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-weight='bold' font-size='14' fill='%233d9bff'>[UC]</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23faf9f5'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-weight='700' font-size='15' fill='%231f3a5f'>UC</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    /* Backgrounds — very slightly blue-tinted darks */
-    --bg:       #04060b;
-    --surface:  #080d16;
-    --surface2: #0c1220;
-    --surface3: #101826;
+  :root{
+    --bg:       #faf9f5;
+    --surface:  #ffffff;
+    --surface2: #f3f1ea;
 
-    /* Borders */
-    --border:   #0f1e33;
-    --border2:  #162843;
+    --line:     #e4e1d6;
+    --line2:    #d3cfc0;
 
-    /* Blue accent system */
-    --accent:       #3d9bff;
-    --accent-bright:#60b0ff;
-    --accent-dim:   rgba(61,155,255,0.12);
-    --accent-glow:  rgba(61,155,255,0.07);
-    --accent-line:  rgba(61,155,255,0.35);
+    --ink:      #201f1a;
+    --ink2:     #5a5850;
+    --ink3:     #918d80;
 
-    /* Secondary warm accent for highlights */
-    --warm:     #56d4c8;
+    --accent:   #1f3a5f;
+    --accent2:  #a4762e;
 
-    /* Text — readable hierarchy */
-    --text:     #dce8f5;
-    --text2:    #92adc8;
-    --text3:    #506070;
-    --text4:    #2a3d52;
-
-    /* Fonts */
-    --font-display: 'Rajdhani', sans-serif;
+    --font-display: 'Source Serif 4', Georgia, serif;
     --font-body:    'Inter', sans-serif;
     --font-mono:    'JetBrains Mono', monospace;
-
-    /* Clip paths */
-    --clip: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-    --clip-sm: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
   }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 15px;
-    line-height: 1.6;
-    overflow-x: hidden;
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:var(--font-body); font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
   }
-
-  /* ── CURSOR ── */
-  #cursor {
-    width: 6px; height: 6px;
-    background: var(--accent);
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9999;
-    transform: translate(-50%,-50%);
-    transition: transform 0.1s ease, background 0.2s;
-    box-shadow: 0 0 8px var(--accent);
-  }
-  #cursor-ring {
-    width: 28px; height: 28px;
-    border: 1px solid var(--accent-line);
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9998;
-    transform: translate(-50%,-50%);
-    transition: all 0.08s ease;
-  }
-
-  /* ── CONTAINER ── */
-  .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 52px; }
+  a{ color:inherit; }
+  .container{ width:100%; max-width:1040px; margin:0 auto; padding:0 40px; }
 
   /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; width: 100%; z-index: 100;
-    background: rgba(4,6,11,0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border2);
+  nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(250,249,245,0.94); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
   }
-  .nav-inner {
-    max-width: 1280px; margin: 0 auto; padding: 0 52px;
-    height: 60px; display: flex; justify-content: space-between; align-items: center;
+  .nav-inner{
+    max-width:1040px; margin:0 auto; padding:0 40px;
+    height:64px; display:flex; justify-content:space-between; align-items:center;
   }
-  .nav-logo {
-    font-family: var(--font-display);
-    font-size: 20px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--text); text-decoration: none;
-    display: flex; align-items: center; gap: 2px;
+  .nav-logo{
+    font-family:var(--font-display); font-weight:700; font-size:19px;
+    letter-spacing:0.3px; text-decoration:none; color:var(--ink);
   }
-  .nav-logo-bracket { color: var(--accent); font-weight: 400; opacity: 0.8; }
-  .nav-links { display: flex; gap: 2px; list-style: none; }
-  .nav-links a {
-    font-family: var(--font-mono);
-    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
-    color: var(--text3); text-decoration: none;
-    padding: 5px 14px;
-    border: 1px solid transparent;
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  .nav-logo em{ font-style:italic; color:var(--accent); }
+  .nav-links{ display:flex; gap:26px; list-style:none; }
+  .nav-links a{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.8px; text-transform:uppercase;
+    color:var(--ink2); text-decoration:none; padding-bottom:3px;
+    border-bottom:1px solid transparent; transition:color 0.2s, border-color 0.2s;
   }
-  .nav-links a:hover { color: var(--accent); border-color: var(--border2); background: var(--accent-glow); }
+  .nav-links a:hover, .nav-links a.active{ color:var(--accent); border-color:var(--accent); }
 
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    display: flex; align-items: flex-end;
-    position: relative; overflow: hidden;
-    background: var(--bg);
+  .nav-hamburger{
+    display:none; flex-direction:column; justify-content:center; gap:5px;
+    width:34px; height:34px; cursor:pointer; background:none; border:none; padding:6px;
   }
-  #hero-canvas {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    z-index: 0; pointer-events: none;
-  }
-  .hero-scan {
-    position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom, transparent, transparent 2px,
-      rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 3px
-    );
-  }
-  .hero-vignette {
-    position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background:
-      radial-gradient(ellipse 90% 70% at 50% 110%, transparent 20%, rgba(4,6,11,0.9) 80%),
-      linear-gradient(to right, rgba(4,6,11,0.6), transparent 35%, transparent 65%, rgba(4,6,11,0.6));
-  }
-  /* HUD corner brackets */
-  .hero-hud-tl, .hero-hud-tr, .hero-hud-bl, .hero-hud-br {
-    position: absolute; z-index: 3; width: 28px; height: 28px;
-    pointer-events: none;
-  }
-  .hero-hud-tl { top: 80px; left: 52px; border-top: 1px solid var(--accent-line); border-left: 1px solid var(--accent-line); }
-  .hero-hud-tr { top: 80px; right: 52px; border-top: 1px solid var(--accent-line); border-right: 1px solid var(--accent-line); }
-  .hero-hud-bl { bottom: 40px; left: 52px; border-bottom: 1px solid var(--accent-line); border-left: 1px solid var(--accent-line); }
-  .hero-hud-br { bottom: 40px; right: 52px; border-bottom: 1px solid var(--accent-line); border-right: 1px solid var(--accent-line); }
+  .nav-hamburger span{ display:block; width:20px; height:1px; background:var(--ink2); transition:all 0.25s ease; }
+  .nav-hamburger.open span:nth-child(1){ transform:translateY(6px) rotate(45deg); background:var(--accent); }
+  .nav-hamburger.open span:nth-child(2){ opacity:0; }
+  .nav-hamburger.open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); background:var(--accent); }
 
-  .hero-inner {
-    width: 100%; max-width: 1280px; margin: 0 auto;
-    padding: 0 52px 96px; position: relative; z-index: 4;
+  .nav-mobile-overlay{
+    display:none; position:fixed; inset:0; background:rgba(250,249,245,0.98);
+    z-index:150; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    opacity:0; transition:opacity 0.25s ease;
   }
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--accent);
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 24px; opacity: 0;
-    animation: fadeUp 0.6s ease 0.2s forwards;
+  .nav-mobile-overlay.open{ opacity:1; }
+  .nav-mobile-overlay a{
+    font-family:var(--font-display); font-size:28px; font-weight:600;
+    color:var(--ink); text-decoration:none; padding:10px 24px;
   }
-  .hero-eyebrow-line { width: 36px; height: 1px; background: var(--accent); }
+  .nav-mobile-overlay a:hover{ color:var(--accent); }
 
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(80px, 12vw, 168px);
-    font-weight: 700; line-height: 0.9;
-    letter-spacing: 2px; text-transform: uppercase;
-    margin-bottom: 40px;
+  /* ── HERO / LETTERHEAD ── */
+  #hero{ padding:96px 0 64px; }
+  .hero-kicker{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
+    color:var(--accent2); margin-bottom:22px;
   }
-  .hero-title .line { overflow: hidden; display: block; }
-  .hero-title .line span {
-    display: block; transform: translateY(110%);
-    animation: slideUp 0.75s cubic-bezier(0.16,1,0.3,1) forwards;
+  .hero-name{
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(48px,7vw,84px); line-height:1.02; letter-spacing:-0.5px;
+    margin-bottom:14px;
   }
-  .hero-title .line:nth-child(1) span { animation-delay: 0.15s; }
-  .hero-title .line:nth-child(2) span { animation-delay: 0.25s; }
-  .hero-title .line:nth-child(3) span { animation-delay: 0.35s; color: var(--accent); }
+  .hero-role{
+    font-family:var(--font-display); font-style:italic; font-weight:500;
+    font-size:clamp(20px,2.4vw,27px); color:var(--accent); margin-bottom:28px;
+  }
+  .hero-rule{ width:100%; height:1px; background:var(--line2); margin:28px 0; }
+  .hero-meta{
+    display:flex; flex-wrap:wrap; gap:28px; align-items:center; margin-bottom:34px;
+  }
+  .hero-meta-item{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink2); letter-spacing:0.3px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .hero-meta-item b{ color:var(--ink); font-weight:500; }
+  .hero-desc{ font-size:17px; line-height:1.8; color:var(--ink2); max-width:620px; margin-bottom:36px; }
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; }
 
-  .hero-bottom {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    gap: 40px; flex-wrap: wrap;
-    opacity: 0; animation: fadeUp 0.7s ease 0.7s forwards;
+  .btn-primary{
+    padding:13px 26px; background:var(--accent); color:#fff;
+    font-family:var(--font-mono); font-size:11px; font-weight:500;
+    letter-spacing:1.5px; text-transform:uppercase; text-decoration:none;
+    display:inline-flex; align-items:center; gap:9px;
+    transition:background 0.2s, transform 0.15s;
   }
-  .hero-desc {
-    font-family: var(--font-body);
-    font-size: 15px; line-height: 1.75; color: var(--text2);
-    max-width: 440px;
-    border-left: 2px solid var(--accent);
-    padding-left: 20px;
+  .btn-primary:hover{ background:#152c49; transform:translateY(-1px); }
+  .btn-secondary{
+    padding:13px 26px; background:transparent; border:1px solid var(--line2); color:var(--ink);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:1.5px; text-transform:uppercase;
+    text-decoration:none; transition:all 0.2s;
   }
-  .hero-cta { display: flex; gap: 12px; align-items: center; }
-  .hero-coords {
-    position: absolute; right: 52px; bottom: 96px; z-index: 4;
-    font-family: var(--font-mono); font-size: 9px;
-    color: var(--text4); letter-spacing: 3px;
-    writing-mode: vertical-rl; text-transform: uppercase;
-  }
-
-  @keyframes slideUp { to { transform: translateY(0); } }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-
-  /* ── BUTTONS ── */
-  .btn-primary {
-    padding: 12px 28px;
-    background: var(--accent); color: #000;
-    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
-    letter-spacing: 2px; text-transform: uppercase;
-    text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
-    clip-path: var(--clip);
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-primary:hover {
-    background: var(--accent-bright);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 28px rgba(61,155,255,0.35);
-  }
-  .btn-secondary {
-    padding: 12px 28px; background: transparent;
-    border: 1px solid var(--border2); color: var(--text2);
-    font-family: var(--font-mono); font-size: 10px;
-    letter-spacing: 2px; text-transform: uppercase;
-    text-decoration: none; clip-path: var(--clip);
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
-
-  /* ── MARQUEE ── */
-  .marquee-strip {
-    background: var(--accent); padding: 10px 0;
-    overflow: hidden; white-space: nowrap;
-  }
-  .marquee-inner { display: inline-flex; animation: marquee 22s linear infinite; }
-  .marquee-item {
-    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
-    letter-spacing: 3px; text-transform: uppercase;
-    color: rgba(0,0,0,0.75); padding: 0 36px;
-  }
-  .marquee-sep { color: rgba(0,0,0,0.3); }
-  @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  .btn-secondary:hover{ border-color:var(--accent); color:var(--accent); }
 
   /* ── SECTIONS ── */
-  section { padding: 120px 0; }
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--accent);
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 64px;
+  section{ padding:76px 0; border-top:1px solid var(--line); }
+  #hero{ border-top:none; }
+  .section-label{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
+    color:var(--accent2); margin-bottom:12px;
   }
-  .section-label::after {
-    content: ''; flex: 1; max-width: 56px;
-    height: 1px; background: var(--accent); opacity: 0.3;
+  .section-title{
+    font-family:var(--font-display); font-weight:700; font-size:clamp(28px,3.2vw,38px);
+    letter-spacing:-0.3px; margin-bottom:44px;
   }
+  .section-title em{ font-style:italic; color:var(--accent); }
 
   /* ── ABOUT ── */
-  #about { background: var(--surface); }
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 88px; align-items: start; }
-  .about-heading {
-    font-family: var(--font-display);
-    font-size: clamp(44px, 4.5vw, 64px); font-weight: 700;
-    text-transform: uppercase; line-height: 1; letter-spacing: 2px;
-    margin-bottom: 28px;
+  .about-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:72px; align-items:start; }
+  .about-text{ font-size:16px; line-height:1.85; color:var(--ink2); margin-bottom:18px; }
+  .about-focus{ margin-top:28px; }
+  .about-focus-label{ font-family:var(--font-mono); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink3); margin-bottom:12px; }
+  .focus-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .focus-tag{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.3px;
+    padding:6px 12px; background:var(--surface2); border:1px solid var(--line); color:var(--ink2);
   }
-  .about-heading em { font-style: normal; color: var(--accent); }
-  .about-text { font-size: 15px; line-height: 1.85; color: var(--text2); margin-bottom: 20px; }
 
-  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 32px; }
-  .skill-pill {
-    padding: 9px 14px;
-    background: var(--surface2);
-    border-left: 2px solid var(--border2);
-    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px;
-    color: var(--text2); transition: all 0.2s; cursor: default;
-  }
-  .skill-pill:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+  .stat-block{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:40px; }
+  .stat{ background:var(--surface); padding:22px 20px; }
+  .stat-num{ font-family:var(--font-display); font-size:36px; font-weight:700; line-height:1; margin-bottom:6px; }
+  .stat-num em{ font-style:italic; color:var(--accent); }
+  .stat-label{ font-family:var(--font-mono); font-size:10px; color:var(--ink3); letter-spacing:1.2px; text-transform:uppercase; }
 
-  .stat-block { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-bottom: 36px; }
-  .stat {
-    background: var(--surface2); padding: 28px 24px;
-    position: relative; overflow: hidden;
-    border-bottom: 2px solid transparent; transition: border-color 0.3s;
-  }
-  .stat:hover { border-color: var(--accent); }
-  .stat-num {
-    font-family: var(--font-display); font-size: 48px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px; color: var(--text);
-    line-height: 1; margin-bottom: 6px;
-  }
-  .stat-num span { color: var(--accent); }
-  .stat-label { font-family: var(--font-mono); font-size: 9px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; }
+  .lang-row{ display:flex; justify-content:space-between; align-items:baseline; padding:11px 0; border-bottom:1px solid var(--line); }
+  .lang-row:last-child{ border-bottom:none; }
+  .lang-name{ font-size:15px; color:var(--ink); }
+  .lang-level{ font-family:var(--font-mono); font-size:10px; color:var(--accent); letter-spacing:1.2px; text-transform:uppercase; }
+  .lang-level.dim{ color:var(--ink3); }
 
-  /* Languages */
-  .lang-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 13px 0; border-bottom: 1px solid var(--border);
+  /* ── EXPERIENCE (timeline) ── */
+  .timeline{ position:relative; padding-left:26px; }
+  .timeline::before{ content:''; position:absolute; left:0; top:8px; bottom:8px; width:1px; background:var(--line2); }
+  .exp-item{ position:relative; padding-bottom:52px; }
+  .exp-item:last-child{ padding-bottom:0; }
+  .exp-dot{
+    position:absolute; left:-30px; top:6px; width:9px; height:9px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--accent);
   }
-  .lang-name { font-size: 14px; color: var(--text2); }
-  .lang-level { font-family: var(--font-mono); font-size: 9px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
-  .lang-level.dim { color: var(--text3); }
+  .exp-item.is-current .exp-dot{ background:var(--accent); }
+  .exp-date{ font-family:var(--font-mono); font-size:11px; color:var(--ink3); letter-spacing:0.5px; margin-bottom:8px; }
+  .exp-company{
+    font-family:var(--font-display); font-size:24px; font-weight:700; letter-spacing:-0.2px;
+    display:flex; align-items:center; gap:12px; margin-bottom:4px; flex-wrap:wrap;
+  }
+  .exp-company a{ text-decoration:none; color:inherit; border-bottom:1px solid transparent; transition:border-color 0.2s, color 0.2s; }
+  .exp-company a:hover{ color:var(--accent); border-color:var(--accent); }
+  .exp-badge{
+    font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; text-transform:uppercase;
+    padding:3px 9px; background:var(--accent); color:#fff;
+  }
+  .exp-badge.outline{ background:transparent; color:var(--accent2); border:1px solid var(--accent2); }
+  .exp-location{ font-family:var(--font-mono); font-size:11px; color:var(--ink3); margin-bottom:18px; }
 
-  /* ── EXPERIENCE ── */
-  #experience { background: var(--bg); }
-  .exp-list { width: 100%; }
-  .exp-item {
-    display: grid; grid-template-columns: 160px 1fr;
-    gap: 44px; padding: 44px 0;
-    border-bottom: 1px solid var(--border);
-    position: relative; transition: all 0.3s;
-  }
-  .exp-item:first-child { border-top: 1px solid var(--border); }
-  .exp-item::before {
-    content: ''; position: absolute; left: -52px; top: 0;
-    width: 0; height: 100%;
-    background: linear-gradient(to right, rgba(61,155,255,0.04), transparent);
-    transition: width 0.5s ease;
-  }
-  .exp-item:hover::before { width: calc(100% + 104px); }
+  .exp-role-block{ margin-bottom:22px; }
+  .exp-role-block:last-child{ margin-bottom:0; }
+  .exp-role-title{ font-size:15px; font-weight:600; color:var(--ink); margin-bottom:2px; }
+  .exp-role-date{ font-family:var(--font-mono); font-size:10px; color:var(--ink3); letter-spacing:0.4px; margin-bottom:10px; }
+  .exp-bullets{ list-style:none; display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+  .exp-bullets li{ font-size:14.5px; color:var(--ink2); line-height:1.65; padding-left:18px; position:relative; }
+  .exp-bullets li::before{ content:'—'; position:absolute; left:0; color:var(--ink3); }
+  .exp-project{ font-family:var(--font-mono); font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--ink3); }
+  .exp-project em{ font-style:normal; color:var(--accent2); }
 
-  .exp-date { font-family: var(--font-mono); font-size: 10px; color: var(--text3); letter-spacing: 0.5px; padding-top: 6px; line-height: 1.7; }
-  .exp-company {
-    font-family: var(--font-display); font-size: 26px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 4px; display: flex; align-items: center; gap: 12px;
+  .exp-video{
+    margin-top:16px; position:relative; width:100%; max-width:320px; aspect-ratio:16/9;
+    overflow:hidden; border:1px solid var(--line2); display:block; text-decoration:none;
   }
-  .exp-company a { color: inherit; text-decoration: none; transition: color 0.2s; }
-  .exp-company a:hover { color: var(--accent); }
-  .exp-badge {
-    font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-    padding: 3px 9px; background: var(--accent-dim); color: var(--accent);
-    border: 1px solid rgba(61,155,255,0.25); clip-path: var(--clip-sm);
+  .exp-video img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.35s; }
+  .exp-video:hover img{ transform:scale(1.03); }
+  .exp-video-play{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .exp-video-play svg{ width:38px; height:38px; filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5)); }
+  .exp-video-label{
+    position:absolute; bottom:0; left:0; right:0; padding:7px 10px;
+    background:linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+    font-family:var(--font-mono); font-size:9px; letter-spacing:1px; text-transform:uppercase; color:#fff;
   }
-  .exp-role { font-family: var(--font-mono); font-size: 11px; color: var(--text3); letter-spacing: 0.5px; margin-bottom: 16px; }
-  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-  .exp-bullets li {
-    font-size: 14px; color: var(--text2); line-height: 1.65;
-    padding-left: 20px; position: relative;
-  }
-  .exp-bullets li::before {
-    content: '▸'; position: absolute; left: 0;
-    color: var(--accent); font-size: 10px; top: 3px;
-  }
-  .exp-project { margin-top: 16px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text4); }
-  .exp-project span { color: var(--warm); }
 
-  /* Videos */
-  .exp-videos { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
-  .exp-video {
-    position: relative; width: 100%; max-width: 380px; aspect-ratio: 16/9;
-    overflow: hidden; border: 1px solid var(--border);
-    background: var(--surface2); display: block; text-decoration: none;
-  }
-  .exp-video::after {
-    content: ''; position: absolute; inset: 0;
-    border: 1px solid transparent; transition: border-color 0.25s; z-index: 3;
-  }
-  .exp-video:hover::after { border-color: var(--accent); }
-  .exp-video img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform 0.4s ease, filter 0.3s;
-    filter: brightness(0.6) saturate(0.6);
-  }
-  .exp-video:hover img { transform: scale(1.04); filter: brightness(0.78) saturate(0.85); }
-  .exp-video-play {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 2;
-  }
-  .exp-video-play svg { width: 44px; height: 44px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7)); transition: transform 0.2s; }
-  .exp-video:hover .exp-video-play svg { transform: scale(1.1); }
-  .exp-video-label {
-    position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 12px; z-index: 2;
-    background: linear-gradient(to top, rgba(4,6,11,0.95), transparent);
-    font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text3);
-  }
+  /* Early background block */
+  .bg-block{ background:var(--surface2); border:1px solid var(--line); padding:26px 28px; margin-top:8px; }
+  .bg-block-label{ font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink3); margin-bottom:14px; }
+  .bg-row{ display:flex; justify-content:space-between; gap:20px; padding:10px 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .bg-row:last-child{ border-bottom:none; }
+  .bg-row-left b{ font-size:14.5px; font-weight:600; }
+  .bg-row-left span{ display:block; font-size:13px; color:var(--ink2); margin-top:2px; }
+  .bg-row-right{ font-family:var(--font-mono); font-size:11px; color:var(--ink3); white-space:nowrap; }
 
   /* ── SKILLS ── */
-  #skills { background: var(--surface); }
-  .skills-visual { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; }
-  .skill-card {
-    background: var(--surface2); padding: 32px 28px;
-    position: relative; overflow: hidden; transition: transform 0.25s;
-    border-bottom: 2px solid transparent;
-  }
-  .skill-card:hover { transform: translateY(-3px); border-color: var(--accent); }
-  .skill-card-icon { font-size: 22px; margin-bottom: 16px; }
-  .skill-card-title {
-    font-family: var(--font-display); font-size: 18px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; color: var(--text);
-  }
-  .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-  .skill-tag {
-    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px;
-    padding: 4px 10px; background: rgba(61,155,255,0.04);
-    border: 1px solid var(--border2); color: var(--text2); transition: all 0.15s;
-  }
-  .skill-card:hover .skill-tag { border-color: rgba(61,155,255,0.2); }
+  .skills-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .skill-card{ background:var(--surface); padding:28px 26px; }
+  .skill-card-num{ font-family:var(--font-mono); font-size:11px; color:var(--accent2); letter-spacing:1px; margin-bottom:10px; }
+  .skill-card-title{ font-family:var(--font-display); font-size:18px; font-weight:700; margin-bottom:14px; }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap:6px; }
+  .skill-tag{ font-family:var(--font-mono); font-size:10.5px; padding:4px 10px; background:var(--surface2); border:1px solid var(--line); color:var(--ink2); }
 
   /* ── PROJECTS ── */
-  #projects { background: var(--bg); }
-  .projects-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 3px; }
-  .project-card {
-    background: var(--surface); position: relative;
-    overflow: hidden; transition: all 0.3s; text-decoration: none; color: inherit; display: block;
-  }
-  .project-card-img { width: 100%; aspect-ratio: 16/9; overflow: hidden; position: relative; }
-  .project-card-img img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform 0.5s ease, filter 0.3s;
-    filter: brightness(0.6) saturate(0.65);
-  }
-  .project-card:hover .project-card-img img { transform: scale(1.05); filter: brightness(0.8) saturate(0.9); }
-  .project-card-body { padding: 24px 28px 28px; }
-  .project-card:hover { background: var(--surface2); }
-  .project-card::after {
-    content: '↗'; position: absolute; top: 20px; right: 24px;
-    font-size: 18px; color: rgba(255,255,255,0.3);
-    transition: all 0.3s; z-index: 2;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-  }
-  .project-card:hover::after { color: var(--accent); transform: translate(4px,-4px); }
-  .project-cat { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
-  .project-name { font-family: var(--font-display); font-size: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-  .project-desc { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 20px; }
-  .project-tech { display: flex; gap: 6px; flex-wrap: wrap; }
-  .tech-tag {
-    font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px;
-    padding: 4px 10px; border: 1px solid var(--border2); color: var(--text3); clip-path: var(--clip-sm);
-  }
-  .project-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-  .project-card.featured .project-name { font-size: 34px; }
+  .projects-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .project-card{ background:var(--surface); text-decoration:none; color:inherit; display:block; transition:background 0.2s; }
+  .project-card:hover{ background:var(--surface2); }
+  .project-card-img{ width:100%; aspect-ratio:16/9; overflow:hidden; border-bottom:1px solid var(--line); }
+  .project-card-img img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s; }
+  .project-card:hover .project-card-img img{ transform:scale(1.03); }
+  .project-card-body{ padding:22px 24px 26px; }
+  .project-cat{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:1.8px; text-transform:uppercase; color:var(--ink3); margin-bottom:8px; }
+  .project-name{ font-family:var(--font-display); font-size:22px; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+  .project-name .arrow{ font-size:15px; color:var(--accent2); }
+  .project-desc{ font-size:13.5px; color:var(--ink2); line-height:1.7; margin-bottom:16px; }
+  .project-tech{ display:flex; gap:6px; flex-wrap:wrap; }
+  .tech-tag{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.5px; padding:4px 9px; border:1px solid var(--line2); color:var(--ink3); }
 
   /* ── PLUGINS ── */
-  #plugins { background: var(--surface); }
-  .plugins-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 3px; }
-  .plugin-card {
-    background: var(--surface2); position: relative; overflow: hidden;
-    transition: all 0.3s; display: flex; flex-direction: column;
-    border-bottom: 2px solid transparent;
+  .plugin-card{ background:var(--surface); border:1px solid var(--line); display:flex; flex-direction:column; }
+  .plugin-card-img{ width:100%; aspect-ratio:16/9; overflow:hidden; border-bottom:1px solid var(--line); }
+  .plugin-card-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .plugin-card-body{ padding:26px 28px; }
+  .plugin-status{
+    display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:9.5px;
+    letter-spacing:1.8px; text-transform:uppercase; padding:4px 11px; background:var(--accent); color:#fff; margin-bottom:16px;
   }
-  .plugin-card:hover { border-color: var(--accent); }
-  .plugin-card-img { width: 100%; aspect-ratio: 16/9; overflow: hidden; border-bottom: 1px solid var(--border); }
-  .plugin-card-img img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform 0.5s, filter 0.3s;
-    filter: brightness(0.65) saturate(0.7);
-  }
-  .plugin-card:hover .plugin-card-img img { transform: scale(1.03); filter: brightness(0.82) saturate(0.95); }
-  .plugin-card-placeholder {
-    width: 100%; aspect-ratio: 16/9; background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-  }
-  .plugin-card-placeholder::before {
-    content: ''; position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(61,155,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(61,155,255,0.03) 1px, transparent 1px);
-    background-size: 36px 36px;
-  }
-  .plugin-card-placeholder-label {
-    font-family: var(--font-mono); font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--text4); position: relative; z-index: 1;
-  }
-  .plugin-card-body { padding: 24px 28px 28px; flex: 1; display: flex; flex-direction: column; }
-  .plugin-status {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-family: var(--font-mono); font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase;
-    padding: 4px 12px; background: var(--accent-dim); color: var(--accent);
-    border: 1px solid rgba(61,155,255,0.2); margin-bottom: 16px; width: fit-content;
-    clip-path: var(--clip-sm);
-  }
-  .plugin-status::before {
-    content: ''; width: 5px; height: 5px; border-radius: 50%;
-    background: var(--accent); box-shadow: 0 0 7px var(--accent);
-    animation: pulse 2s ease infinite;
-  }
-  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
-  .plugin-engine { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text4); margin-bottom: 7px; }
-  .plugin-name { font-family: var(--font-display); font-size: 28px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; line-height: 1.05; margin-bottom: 10px; }
-  .plugin-tagline { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 20px; }
-  .plugin-features { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 24px; flex: 1; }
-  .plugin-features li { font-size: 14px; color: var(--text2); line-height: 1.55; padding-left: 18px; position: relative; }
-  .plugin-features li::before {
-    content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 10px; top: 2px;
-  }
-  .plugin-footer {
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 12px; padding-top: 18px;
-    border-top: 1px solid var(--border); margin-top: auto;
-  }
-  .plugin-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-  .plugin-link {
-    font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--accent); text-decoration: none;
-    display: inline-flex; align-items: center; gap: 6px; transition: gap 0.2s;
-  }
-  .plugin-link:hover { gap: 11px; }
-  .plugin-link-soon { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text4); cursor: default; }
+  .plugin-engine{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--ink3); margin-bottom:8px; }
+  .plugin-name{ font-family:var(--font-display); font-size:26px; font-weight:700; margin-bottom:10px; }
+  .plugin-tagline{ font-size:14.5px; color:var(--ink2); line-height:1.7; margin-bottom:18px; }
+  .plugin-features{ list-style:none; display:flex; flex-direction:column; gap:7px; margin-bottom:22px; }
+  .plugin-features li{ font-size:13.5px; color:var(--ink2); line-height:1.55; padding-left:16px; position:relative; }
+  .plugin-features li::before{ content:'—'; position:absolute; left:0; color:var(--ink3); }
+  .plugin-footer{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:16px; border-top:1px solid var(--line); }
+  .plugin-tags{ display:flex; gap:6px; flex-wrap:wrap; }
+  .plugin-link{ font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); text-decoration:none; }
+  .plugin-link:hover{ text-decoration:underline; }
+
+  /* ── CREDENTIALS (Certifications / Honors) ── */
+  .cred-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; }
+  .cred-list{ display:flex; flex-direction:column; }
+  .cred-row{ padding:14px 0; border-bottom:1px solid var(--line); display:flex; gap:14px; align-items:baseline; }
+  .cred-row:last-child{ border-bottom:none; }
+  .cred-row-mark{ font-family:var(--font-mono); font-size:11px; color:var(--accent2); flex-shrink:0; }
+  .cred-row-text{ font-size:14.5px; color:var(--ink); line-height:1.5; }
+
+  /* ── EDUCATION ── */
+  .edu-row{ display:grid; grid-template-columns:200px 1fr; gap:24px; padding:20px 0; border-bottom:1px solid var(--line); }
+  .edu-row:first-child{ border-top:1px solid var(--line); }
+  .edu-date{ font-family:var(--font-mono); font-size:11px; color:var(--ink3); padding-top:2px; }
+  .edu-name{ font-size:15.5px; font-weight:600; margin-bottom:3px; }
+  .edu-detail{ font-size:13.5px; color:var(--ink2); }
 
   /* ── CONTACT ── */
-  #contact { background: var(--surface2); text-align: center; }
-  .contact-big {
-    font-family: var(--font-display);
-    font-size: clamp(52px, 8.5vw, 112px);
-    font-weight: 700; text-transform: uppercase;
-    letter-spacing: 2px; line-height: 0.92; margin-bottom: 48px;
+  #contact{ background:var(--surface2); text-align:center; }
+  .contact-title{
+    font-family:var(--font-display); font-weight:700; font-style:italic;
+    font-size:clamp(38px,6vw,64px); line-height:1.1; margin-bottom:36px;
   }
-  .contact-big em { font-style: normal; color: var(--accent); }
-  .contact-links { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
-  .contact-link {
-    font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--text2); text-decoration: none; transition: color 0.2s;
-    display: flex; align-items: center; gap: 7px;
+  .contact-links{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:36px; }
+  .contact-link{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--ink2); text-decoration:none; border-bottom:1px solid transparent; transition:color 0.2s, border-color 0.2s;
+    display:flex; align-items:center; gap:6px;
   }
-  .contact-link:hover { color: var(--accent); }
+  .contact-link:hover{ color:var(--accent); border-color:var(--accent); }
 
   /* ── FOOTER ── */
-  footer { background: var(--bg); padding: 26px 0; border-top: 1px solid var(--border); }
-  .footer-copy { font-family: var(--font-mono); font-size: 9px; color: var(--text4); letter-spacing: 2px; text-transform: uppercase; }
+  footer{ background:var(--bg); padding:26px 0; border-top:1px solid var(--line); }
+  .footer-copy{ font-family:var(--font-mono); font-size:10px; color:var(--ink3); letter-spacing:1px; text-transform:uppercase; }
 
-  /* ── GLOW ── */
-  .project-card .glow {
-    position: absolute; width: 220px; height: 220px;
-    background: radial-gradient(circle, rgba(61,155,255,0.06) 0%, transparent 70%);
-    border-radius: 50%; pointer-events: none;
-    transform: translate(-50%,-50%); transition: opacity 0.3s; opacity: 0;
-  }
-  .project-card:hover .glow { opacity: 1; }
+  /* ── REVEAL ── */
+  .reveal{ opacity:1; transform:translateY(0); transition:opacity 0.5s ease, transform 0.5s ease; }
+  .js-ready .reveal{ opacity:0; transform:translateY(14px); }
+  .js-ready .reveal.visible{ opacity:1; transform:translateY(0); }
 
-  /* ── HAMBURGER MENU ── */
-  .nav-hamburger {
-    display: none;
-    flex-direction: column; justify-content: center; gap: 5px;
-    width: 36px; height: 36px; cursor: pointer;
-    background: none; border: none; padding: 6px;
-    position: relative; z-index: 200;
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .js-ready .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
   }
-  .nav-hamburger span {
-    display: block; width: 20px; height: 1px;
-    background: var(--text2); transition: all 0.3s ease;
-    transform-origin: center;
-  }
-  .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); background: var(--accent); }
-  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background: var(--accent); }
-
-  .nav-mobile-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(4,6,11,0.97);
-    backdrop-filter: blur(20px);
-    z-index: 150;
-    flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-    opacity: 0; transition: opacity 0.3s ease;
-  }
-  .nav-mobile-overlay.open { opacity: 1; }
-  .nav-mobile-overlay a {
-    font-family: var(--font-display);
-    font-size: 36px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--text2); text-decoration: none;
-    padding: 12px 24px; transition: color 0.2s;
-  }
-  .nav-mobile-overlay a:hover { color: var(--accent); }
-  .nav-mobile-overlay .nav-mobile-divider {
-    width: 40px; height: 1px; background: var(--border2); margin: 8px 0;
-  }
-
-  /* ── ACTIVE NAV ── */
-  .nav-links a.active { color: var(--accent); border-color: var(--border2); background: var(--accent-glow); }
-
-  /* ── HIDE CURSOR ON TOUCH ── */
-  @media (hover: none) {
-    #cursor, #cursor-ring { display: none; }
-  }
-
-  /* ── REVEAL — faster ── */
-  .reveal { opacity:1; transform:translateY(0); transition: opacity 0.55s ease, transform 0.55s ease; }
-  .js-ready .reveal { opacity:0; transform:translateY(20px); }
-  .js-ready .reveal.visible { opacity:1; transform:translateY(0); }
 
   /* ── MOBILE ── */
-  @media (max-width: 768px) {
-    .nav-inner { padding: 0 20px; }
-    .nav-links { display: none; }
-    .nav-hamburger { display: flex; }
-    .nav-mobile-overlay { display: flex; }
-    .container { padding: 0 20px; }
-    .hero-inner { padding: 0 20px 72px; }
-    .hero-coords, .hero-hud-tl, .hero-hud-tr, .hero-hud-bl, .hero-hud-br { display: none; }
-    section { padding: 80px 0; }
-    .about-grid { grid-template-columns: 1fr; gap: 48px; }
-    .exp-item { grid-template-columns: 1fr; gap: 6px; }
-    .skills-visual { grid-template-columns: repeat(2, 1fr); }
-    .projects-grid { grid-template-columns: 1fr; }
-    .plugins-grid { grid-template-columns: 1fr; }
-    .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
-    footer .container { flex-direction: column; gap: 10px; text-align: center; }
-    .stat-block { grid-template-columns: 1fr 1fr; }
+  @media (max-width:768px){
+    .nav-inner{ padding:0 20px; }
+    .nav-links{ display:none; }
+    .nav-hamburger{ display:flex; }
+    .nav-mobile-overlay{ display:flex; }
+    .container{ padding:0 20px; }
+    #hero{ padding:56px 0 44px; }
+    section{ padding:56px 0; }
+    .about-grid{ grid-template-columns:1fr; gap:40px; }
+    .skills-grid{ grid-template-columns:1fr; }
+    .projects-grid{ grid-template-columns:1fr; }
+    .cred-grid{ grid-template-columns:1fr; gap:8px; }
+    .edu-row{ grid-template-columns:1fr; gap:4px; }
+    .stat-block{ grid-template-columns:1fr 1fr; }
+    footer .container{ flex-direction:column; gap:10px; text-align:center; }
   }
-  @media (max-width: 480px) {
-    .skills-visual { grid-template-columns: 1fr; }
-  }
-
 </style>
 </head>
 <body>
 
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
-<!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="#hero" class="nav-logo"><span class="nav-logo-bracket">[</span>UC<span class="nav-logo-bracket">]</span></a>
+    <a href="#hero" class="nav-logo">Uriel <em>Cruz</em></a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#plugins">Plugins</a></li>
+      <li><a href="#credentials">Credentials</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -634,259 +352,246 @@
   </div>
 </nav>
 
-<!-- MOBILE NAV OVERLAY -->
 <div class="nav-mobile-overlay" id="mobileNav" role="dialog" aria-label="Navigation">
   <a href="#about" class="mobile-nav-link">About</a>
-  <div class="nav-mobile-divider"></div>
   <a href="#experience" class="mobile-nav-link">Experience</a>
-  <div class="nav-mobile-divider"></div>
   <a href="#skills" class="mobile-nav-link">Skills</a>
-  <div class="nav-mobile-divider"></div>
   <a href="#projects" class="mobile-nav-link">Projects</a>
-  <div class="nav-mobile-divider"></div>
-  <a href="#plugins" class="mobile-nav-link">Plugins</a>
-  <div class="nav-mobile-divider"></div>
+  <a href="#credentials" class="mobile-nav-link">Credentials</a>
   <a href="#contact" class="mobile-nav-link">Contact</a>
 </div>
 
 <!-- HERO -->
 <section id="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-scan"></div>
-  <div class="hero-vignette"></div>
-  <div class="hero-hud-tl"></div>
-  <div class="hero-hud-tr"></div>
-  <div class="hero-hud-bl"></div>
-  <div class="hero-hud-br"></div>
-
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-eyebrow">
-        <span class="hero-eyebrow-line"></span>
-        Technical Designer · UE5 · Prague
-      </div>
-      <h1 class="hero-title">
-        <span class="line"><span>Uriel</span></span>
-        <span class="line"><span>Cruz</span></span>
-        <span class="line"><span>Game Dev</span></span>
-      </h1>
-      <div class="hero-bottom">
-        <p class="hero-desc">
-          Specialized in Unreal Engine 5 — C++, Blueprints &amp; GAS.<br>
-          Bridging design and engineering to build unforgettable gameplay.
-        </p>
-        <div class="hero-cta">
-          <a href="#contact" class="btn-primary">Get in touch ↓</a>
-          <a href="files/URIEL_CRUZ_CV.pdf" class="btn-secondary" download>Download CV</a>
-        </div>
-      </div>
+  <div class="container">
+    <div class="hero-kicker">Portfolio — Technical Design</div>
+    <h1 class="hero-name">Uriel Cruz</h1>
+    <p class="hero-role">Senior Technical Designer, Unreal Engine 5</p>
+    <div class="hero-rule"></div>
+    <div class="hero-meta">
+      <span class="hero-meta-item"><b>Prague, Czechia</b> — originally from Spain</span>
+      <span class="hero-meta-item">urielcruz@proton.me</span>
+    </div>
+    <p class="hero-desc">
+      Currently driving technical design at GRIP Studios, taking full feature ownership of core player mechanics, 3C systems, and interactive gameplay features across AA &amp; AAA projects. Experienced in multi-phase boss encounters, technical prototyping, and authoring modular gameplay architecture (TDDs).
+    </p>
+    <div class="hero-cta">
+      <a href="mailto:urielcruz@proton.me" class="btn-primary">Get in touch →</a>
+      <a href="files/URIEL_CRUZ_CV.pdf" class="btn-secondary" download>Download CV</a>
     </div>
   </div>
-  <div class="hero-coords">Prague · Czech Republic · 50.0755°N</div>
 </section>
-<div class="marquee-strip">
-  <div class="marquee-inner">
-    <span class="marquee-item">Unreal Engine 5</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">C++ / Blueprints</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Gameplay Ability System</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Motion Matching</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Boss AI Design</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Combat Systems</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Technical Level Design</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Unreal Engine 5</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">C++ / Blueprints</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Gameplay Ability System</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Motion Matching</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Boss AI Design</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Combat Systems</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Technical Level Design</span><span class="marquee-item marquee-sep">✦</span>
-  </div>
-</div>
 
 <!-- ABOUT -->
 <section id="about">
   <div class="container">
-  <div class="section-label">01 — About</div>
+  <div class="section-label">About</div>
+  <h2 class="section-title">Gameplay <em>Architect</em></h2>
   <div class="about-grid">
     <div class="reveal">
-      <h2 class="about-heading">Gameplay<br><em>Architect</em></h2>
       <p class="about-text">
-        Technical Designer with a proven track record in AAA development. Specialized in Unreal Engine 5 — designing and shipping complex combat systems, boss AI, and advanced locomotion with Motion Matching.
+        Senior Technical Designer specialized in Unreal Engine 5 (C++, Blueprints, GAS), with a proven track record across AA and AAA development. I bridge design vision and technical execution — from rapid prototype to polished, shipping-ready feature — with particular depth in combat systems, multi-phase boss encounters, and advanced locomotion built on Motion Matching.
       </p>
       <p class="about-text">
-        My work bridges design vision and technical execution — from rapid prototype to polished shipping-ready feature. Currently at GRIP Studios (Prague), working on an unannounced AAA title.
+        Core focus is feature ownership: taking a system from concept through TDD, prototyping, and production hardening, while keeping the architecture modular and reusable across teams.
       </p>
-      <div style="margin-top: 32px;">
-        <div class="skills-grid">
-          <div class="skill-pill">Technical Design</div>
-          <div class="skill-pill">Unreal Engine 4/5</div>
-          <div class="skill-pill">C++ & Blueprints</div>
-          <div class="skill-pill">Gameplay Ability System</div>
-          <div class="skill-pill">Combat Systems</div>
-          <div class="skill-pill">Motion Matching</div>
-          <div class="skill-pill">Boss AI Design</div>
-          <div class="skill-pill">Level Design</div>
+      <div class="about-focus">
+        <div class="about-focus-label">Core Focus</div>
+        <div class="focus-tags">
+          <span class="focus-tag">Feature Ownership</span>
+          <span class="focus-tag">3Cs & Player Mechanics</span>
+          <span class="focus-tag">Boss & Combat Design</span>
+          <span class="focus-tag">UE5 Architecture</span>
         </div>
       </div>
     </div>
 
-    <div class="reveal" style="transition-delay: 0.15s;">
+    <div class="reveal" style="transition-delay:0.1s;">
       <div class="stat-block">
         <div class="stat">
-          <div class="stat-num">3<span>+</span></div>
-          <div class="stat-label">Years game dev</div>
+          <div class="stat-num">4<em>+</em></div>
+          <div class="stat-label">Years in games</div>
         </div>
         <div class="stat">
-          <div class="stat-num">4</div>
+          <div class="stat-num">5</div>
           <div class="stat-label">Studios</div>
         </div>
         <div class="stat">
-          <div class="stat-num">AAA</div>
+          <div class="stat-num">AA<em>A</em></div>
           <div class="stat-label">Track record</div>
         </div>
         <div class="stat">
-          <div class="stat-num">UE<span>5</span></div>
+          <div class="stat-num">UE<em>5</em></div>
           <div class="stat-label">Specialized</div>
         </div>
       </div>
-      <div style="margin-top: 32px;">
-        <div class="section-label" style="margin-bottom: 24px;">Languages</div>
-        <div style="display: flex; flex-direction: column;">
-          <div class="lang-row">
-            <span class="lang-name">Spanish</span>
-            <span class="lang-level">Native</span>
-          </div>
-          <div class="lang-row">
-            <span class="lang-name">English</span>
-            <span class="lang-level">Full Professional</span>
-          </div>
-          <div class="lang-row">
-            <span class="lang-name">French</span>
-            <span class="lang-level dim">Working</span>
-          </div>
+      <div>
+        <div class="about-focus-label" style="margin-bottom:8px;">Languages</div>
+        <div>
+          <div class="lang-row"><span class="lang-name">Spanish</span><span class="lang-level">Native / Bilingual</span></div>
+          <div class="lang-row"><span class="lang-name">English</span><span class="lang-level">Full Professional</span></div>
+          <div class="lang-row"><span class="lang-name">Catalan</span><span class="lang-level dim">Professional Working</span></div>
+          <div class="lang-row"><span class="lang-name">French</span><span class="lang-level dim">Limited Working</span></div>
         </div>
       </div>
     </div>
   </div>
-  </div><!-- end container -->
+  </div>
 </section>
 
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="container">
-  <div class="section-label">02 — Experience</div>
-  <div class="exp-list">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Career <em>Timeline</em></h2>
 
-    <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Apr 2025 — Present</div>
+  <div class="timeline">
+
+    <div class="exp-item is-current reveal">
+      <div class="exp-dot"></div>
+      <div class="exp-date">April 2025 — Present · 1 yr 5 mo</div>
+      <div class="exp-company">
+        <a href="https://grip-studios.com" target="_blank" rel="noopener noreferrer">GRIP Studios</a>
+        <span class="exp-badge">Current</span>
       </div>
-      <div>
-        <div class="exp-company">
-          <a href="https://grip-studios.com" target="_blank" rel="noopener noreferrer">GRIP Studios</a>
-          <span class="exp-badge">Current</span>
-        </div>
-        <div class="exp-role">Technical Designer (UE5) · Prague</div>
+      <div class="exp-location">Prague, Czechia</div>
+
+      <div class="exp-role-block">
+        <div class="exp-role-title">Senior Technical Designer (UE5)</div>
+        <div class="exp-role-date">April 2026 — Present · 5 months</div>
         <ul class="exp-bullets">
-          <li>Designed and scripted complex multi-phase boss fights and enemy AI behavior using C++ and Blueprints</li>
-          <li>Developed high-fidelity gameplay prototypes bridging design vision and technical execution</li>
-          <li>Implemented and optimized core gameplay mechanics ensuring 60+ FPS stability</li>
-          <li>Authored technical design documentation (TDD) for modular and reusable gameplay systems</li>
+          <li>Spearhead technical design for primary 3C systems, player mechanics, and interactive features from concept to production</li>
+          <li>Author comprehensive Technical Design Documents (TDDs) and build modular, scalable gameplay frameworks</li>
+          <li>Partner with lead designers, animation, and engineering to align technical execution with game vision</li>
         </ul>
-        <div class="exp-project">Projects: <span>Unannounced AAA · Tomb Raider: Legacy of Atlantis</span></div>
-        <div class="exp-videos">
-          <a href="https://www.youtube.com/watch?v=n6JxVxSHjqE" target="_blank" rel="noopener noreferrer" class="exp-video">
-            <img src="https://img.youtube.com/vi/n6JxVxSHjqE/maxresdefault.jpg" alt="Tomb Raider: Legacy of Atlantis">
-            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
-            <div class="exp-video-label">Tomb Raider: Legacy of Atlantis</div>
-          </a>
-        </div>
+        <div class="exp-project">Projects: <em>Unannounced AAA Titles</em> · UE5, C++, Blueprints, GAS, Perforce</div>
+      </div>
+
+      <div class="exp-role-block">
+        <div class="exp-role-title">Technical Designer (UE5)</div>
+        <div class="exp-role-date">April 2025 — March 2026 · 1 year</div>
+        <ul class="exp-bullets">
+          <li>Designed and scripted complex multi-phase boss fights and AI logic in Tomb Raider: Legacy of Atlantis using C++ and Blueprints</li>
+          <li>Developed high-fidelity prototypes for combat, movement, and weapon systems across AAA unannounced titles</li>
+          <li>Debugged and optimized gameplay systems for target performance, authoring reusable TDDs for studio-wide adoption</li>
+        </ul>
+        <div class="exp-project">Projects: <em>Tomb Raider: Legacy of Atlantis</em>, Unannounced AAA Title · UE5, C++, Blueprints, GAS, Perforce</div>
+        <a href="https://www.youtube.com/watch?v=n6JxVxSHjqE" target="_blank" rel="noopener noreferrer" class="exp-video">
+          <img src="https://img.youtube.com/vi/n6JxVxSHjqE/maxresdefault.jpg" alt="Tomb Raider: Legacy of Atlantis">
+          <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.6)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+          <div class="exp-video-label">Tomb Raider: Legacy of Atlantis</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="exp-item is-current reveal">
+      <div class="exp-dot"></div>
+      <div class="exp-date">January 2026 — Present · 8 months</div>
+      <div class="exp-company">
+        <a href="https://visualdynamics.studio" target="_blank" rel="noopener noreferrer">Visual Dynamics Studio</a>
+        <span class="exp-badge outline">Founder</span>
+      </div>
+      <div class="exp-role-block" style="margin-bottom:0;">
+        <div class="exp-role-title">Solo Technical Designer &amp; Founder</div>
+        <ul class="exp-bullets">
+          <li>Own architecture, C++/Blueprint gameplay programming, and technical design for original games, end to end</li>
+          <li>Run the full production cycle solo: prototyping, 3C systems, gameplay mechanics, and optimization</li>
+        </ul>
+        <div class="exp-project">Projects: <em>Fragmented Iron</em>, <em>Hypoxia</em> · UE5, C++, Blueprints, Game Design</div>
       </div>
     </div>
 
     <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Dec 2023 — Dec 2024</div>
-      </div>
-      <div>
-        <div class="exp-company"><a href="https://daloar.com" target="_blank" rel="noopener noreferrer">DALOAR</a></div>
-        <div class="exp-role">Technical Designer (UE5) · Spain</div>
+      <div class="exp-dot"></div>
+      <div class="exp-date">December 2023 — December 2024 · 1 yr 1 mo</div>
+      <div class="exp-company"><a href="https://daloar.com" target="_blank" rel="noopener noreferrer">DALOAR Studios</a></div>
+      <div class="exp-location">Valladolid, Spain</div>
+      <div class="exp-role-block" style="margin-bottom:0;">
+        <div class="exp-role-title">Technical Designer (UE5)</div>
         <ul class="exp-bullets">
-          <li>Architected a production-ready Motion Matching system and context-aware Parkour system</li>
-          <li>Built a modular GAS ability framework, fully replicated for networked gameplay</li>
-          <li>Developed a data-driven movement framework using Data Assets for designer-friendly configuration</li>
-          <li>Provided technical mentorship and GAS expertise to the development team</li>
+          <li>Designed and integrated a production-ready Motion Matching system and universal, context-aware parkour (climb, mantle, vault)</li>
+          <li>Implemented enhanced abilities using the Gameplay Ability System (GAS) with full network replication</li>
+          <li>Provided technical design support and GAS expertise for The Occultist</li>
         </ul>
-        <div class="exp-project">Projects: <span>Unannounced AAA · The Occultist (Support)</span></div>
-        <div class="exp-videos">
-          <a href="https://www.youtube.com/watch?v=cvD76zgljNY" target="_blank" rel="noopener noreferrer" class="exp-video">
-            <img src="https://img.youtube.com/vi/cvD76zgljNY/maxresdefault.jpg" alt="The Occultist">
-            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
-            <div class="exp-video-label">The Occultist</div>
-          </a>
-        </div>
+        <div class="exp-project">Projects: Unannounced AAA Title, <em>The Occultist</em> · UE5, C++, GAS, Motion Matching</div>
+        <a href="https://www.youtube.com/watch?v=cvD76zgljNY" target="_blank" rel="noopener noreferrer" class="exp-video">
+          <img src="https://img.youtube.com/vi/cvD76zgljNY/maxresdefault.jpg" alt="The Occultist">
+          <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.6)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+          <div class="exp-video-label">The Occultist</div>
+        </a>
       </div>
     </div>
 
     <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Nov 2022 — Jun 2023</div>
-      </div>
-      <div>
-        <div class="exp-company"><a href="https://hechicer-ia.com" target="_blank" rel="noopener noreferrer">HechicerIA</a></div>
-        <div class="exp-role">Lead Technical Designer (UE5) · Spain</div>
+      <div class="exp-dot"></div>
+      <div class="exp-date">November 2022 — June 2023 · 8 months</div>
+      <div class="exp-company"><a href="https://gamespain.es/listing/orenji-games-2/" target="_blank" rel="noopener noreferrer">Orengi Games</a></div>
+      <div class="exp-location">Spain — Remote</div>
+      <div class="exp-role-block" style="margin-bottom:0;">
+        <div class="exp-role-title">Technical Designer (Unreal Engine)</div>
         <ul class="exp-bullets">
-          <li>Led full engine migration from Unity to Unreal Engine 5, establishing the new production pipeline</li>
-          <li>Trained development team on UE5 best practices, Blueprint architecture and coding standards</li>
-          <li>Integrated essential plugins for gameplay and animation while maintaining feature parity</li>
+          <li>Developed Blueprint/C++ interaction systems, state-based AI, level scripting, and editor utilities to streamline designer workflows</li>
+          <li>Implemented core combat mechanics, progression systems, and UI integration for Tears of Elara</li>
         </ul>
-        <div class="exp-project">Projects: <span>Current Anima</span></div>
-        <div class="exp-videos">
-          <a href="https://www.youtube.com/watch?v=kGrSYJymiM4" target="_blank" rel="noopener noreferrer" class="exp-video">
-            <img src="https://img.youtube.com/vi/kGrSYJymiM4/maxresdefault.jpg" alt="Current Anima Trailer">
-            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
-            <div class="exp-video-label">Current Anima — Trailer</div>
-          </a>
-        </div>
+        <div class="exp-project">Project: <em>Tears of Elara</em> · UE5, Blueprints, C++</div>
+        <a href="https://www.youtube.com/watch?v=A-7O4F_XoZs" target="_blank" rel="noopener noreferrer" class="exp-video">
+          <img src="https://img.youtube.com/vi/A-7O4F_XoZs/maxresdefault.jpg" alt="Tears of Elara">
+          <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.6)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+          <div class="exp-video-label">Tears of Elara</div>
+        </a>
       </div>
     </div>
 
     <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Jan 2022 — Mar 2023</div>
-      </div>
-      <div>
-        <div class="exp-company"><a href="https://gamespain.es/listing/orenji-games-2/" target="_blank" rel="noopener noreferrer">Orengi Games</a></div>
-        <div class="exp-role">Technical Designer (UE5) · Remote</div>
+      <div class="exp-dot"></div>
+      <div class="exp-date">January 2022 — March 2023 · 1 yr 3 mo</div>
+      <div class="exp-company"><a href="https://hechicer-ia.com" target="_blank" rel="noopener noreferrer">HechicerIA</a></div>
+      <div class="exp-role-block" style="margin-bottom:0;">
+        <div class="exp-role-title">Unreal Engine Developer</div>
         <ul class="exp-bullets">
-          <li>Developed core character behaviors and AI state machines</li>
-          <li>Created custom Editor Utilities to streamline content creation workflow for artists</li>
-          <li>Designed environments considering spatial dynamics, aesthetics, and game flow</li>
+          <li>Led the technical migration of Current Anima from Unity to UE5, establishing new production pipelines, coding standards, and Perforce workflows</li>
+          <li>Trained and mentored the development team on Blueprint/C++ best practices and plugin integration</li>
         </ul>
-        <div class="exp-project">Projects: <span>Tears of Elara</span></div>
-        <div class="exp-videos">
-          <a href="https://www.youtube.com/watch?v=A-7O4F_XoZs" target="_blank" class="exp-video">
-            <img src="https://img.youtube.com/vi/A-7O4F_XoZs/maxresdefault.jpg" alt="Tears of Elara">
-            <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.7)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
-            <div class="exp-video-label">Tears of Elara</div>
-          </a>
+        <div class="exp-project">Project: <em>Current Anima</em> · UE5, Unity, C++, Blueprints</div>
+        <a href="https://www.youtube.com/watch?v=kGrSYJymiM4" target="_blank" rel="noopener noreferrer" class="exp-video">
+          <img src="https://img.youtube.com/vi/kGrSYJymiM4/maxresdefault.jpg" alt="Current Anima Trailer">
+          <div class="exp-video-play"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="rgba(0,0,0,0.6)"/><path d="M27 34l18-10-18-10v20z" fill="white"/></svg></div>
+          <div class="exp-video-label">Current Anima — Trailer</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-dot"></div>
+      <div class="exp-date">2019</div>
+      <div class="exp-company">Early Background</div>
+      <div class="bg-block">
+        <div class="bg-block-label">Before games — software &amp; web development</div>
+        <div class="bg-row">
+          <div class="bg-row-left"><b>Everis</b><span>Software Developer — backend development, testing and incident resolution using Java, SQL and XML</span></div>
+          <div class="bg-row-right">Oct 2019 – Jun 2020</div>
+        </div>
+        <div class="bg-row">
+          <div class="bg-row-left"><b>Verkia</b><span>Web Developer — full-stack web application design, development and testing</span></div>
+          <div class="bg-row-right">Mar 2019 – Jun 2019</div>
         </div>
       </div>
     </div>
 
   </div>
-  </div><!-- end container -->
+  </div>
 </section>
 
 <!-- SKILLS -->
 <section id="skills">
   <div class="container">
-  <div class="section-label">03 — Skills</div>
-  <div class="skills-visual">
+  <div class="section-label">Skills</div>
+  <h2 class="section-title">Toolset &amp; <em>Expertise</em></h2>
+  <div class="skills-grid">
 
     <div class="skill-card reveal">
-      <div class="skill-card-icon">⚙️</div>
-      <div class="skill-card-title">Engines & Programming</div>
+      <div class="skill-card-num">I</div>
+      <div class="skill-card-title">Engines &amp; Programming</div>
       <div class="skill-tags">
         <span class="skill-tag">Unreal Engine 4/5</span>
         <span class="skill-tag">Unity</span>
@@ -899,8 +604,8 @@
       </div>
     </div>
 
-    <div class="skill-card reveal" style="transition-delay: 0.1s;">
-      <div class="skill-card-icon">🎮</div>
+    <div class="skill-card reveal" style="transition-delay:0.05s;">
+      <div class="skill-card-num">II</div>
       <div class="skill-card-title">Key Technologies</div>
       <div class="skill-tags">
         <span class="skill-tag">GAS</span>
@@ -911,22 +616,22 @@
       </div>
     </div>
 
-    <div class="skill-card reveal" style="transition-delay: 0.2s;">
-      <div class="skill-card-icon">✏️</div>
+    <div class="skill-card reveal" style="transition-delay:0.1s;">
+      <div class="skill-card-num">III</div>
       <div class="skill-card-title">Design</div>
       <div class="skill-tags">
+        <span class="skill-tag">Feature Ownership</span>
         <span class="skill-tag">Combat Design</span>
         <span class="skill-tag">Boss Design</span>
         <span class="skill-tag">Level Design</span>
         <span class="skill-tag">Modular Systems</span>
-        <span class="skill-tag">Data-Driven Design</span>
         <span class="skill-tag">TDD Authoring</span>
       </div>
     </div>
 
-    <div class="skill-card reveal" style="transition-delay: 0.1s;">
-      <div class="skill-card-icon">🛠️</div>
-      <div class="skill-card-title">Tools & Pipeline</div>
+    <div class="skill-card reveal" style="transition-delay:0.05s;">
+      <div class="skill-card-num">IV</div>
+      <div class="skill-card-title">Tools &amp; Pipeline</div>
       <div class="skill-tags">
         <span class="skill-tag">Perforce</span>
         <span class="skill-tag">Git</span>
@@ -936,118 +641,88 @@
       </div>
     </div>
 
-    <div class="skill-card reveal" style="transition-delay: 0.2s;">
-      <div class="skill-card-icon">🎓</div>
-      <div class="skill-card-title">Education</div>
+    <div class="skill-card reveal" style="transition-delay:0.1s;">
+      <div class="skill-card-num">V</div>
+      <div class="skill-card-title">Leadership</div>
       <div class="skill-tags">
-        <span class="skill-tag">Master — Video Game Programming (UE + C++)</span>
-        <span class="skill-tag">Advanced Course — Video Game Design</span>
-        <span class="skill-tag">Senior Tech. — Multiplatform App Dev.</span>
+        <span class="skill-tag">Engine Migration Leadership</span>
+        <span class="skill-tag">Team Mentoring</span>
+        <span class="skill-tag">Cross-Discipline Alignment</span>
       </div>
     </div>
 
-    <div class="skill-card reveal" style="transition-delay: 0.3s;">
-      <div class="skill-card-icon">📝</div>
+    <div class="skill-card reveal" style="transition-delay:0.15s;">
+      <div class="skill-card-num">VI</div>
       <div class="skill-card-title">Also</div>
       <div class="skill-tags">
-        <span class="skill-tag">Technical Review (Book)</span>
-        <span class="skill-tag">Ethical Hacking (2016-2022)</span>
-        <span class="skill-tag">Engine Migration Leadership</span>
-        <span class="skill-tag">Team Mentoring</span>
+        <span class="skill-tag">Technical Reviewer (Book)</span>
+        <span class="skill-tag">Ethical Hacking (2016–2022)</span>
       </div>
     </div>
 
   </div>
-  </div><!-- end container -->
+  </div>
 </section>
 
 <!-- PROJECTS -->
 <section id="projects">
   <div class="container">
-  <div class="section-label">04 — Projects</div>
+  <div class="section-label">Projects</div>
+  <h2 class="section-title">Selected <em>Work</em></h2>
   <div class="projects-grid">
 
     <a href="https://urielcruzmar.itch.io/crypt-raider" target="_blank" rel="noopener noreferrer" class="project-card reveal">
-      <div class="glow"></div>
-      <div class="project-card-img">
-        <img src="images/portfolio/CryptRaider.png" alt="Crypt Raider" width="600" height="338" loading="lazy">
-      </div>
+      <div class="project-card-img"><img src="images/portfolio/CryptRaider.png" alt="Crypt Raider" width="600" height="338" loading="lazy"></div>
       <div class="project-card-body">
         <div class="project-cat">Mini Game · UE5</div>
-        <div class="project-name">Crypt Raider</div>
+        <div class="project-name">Crypt Raider <span class="arrow">↗</span></div>
         <p class="project-desc">Explore and uncover the secrets of a hidden crypt. Solve puzzles in a mysterious setting and unlock new chambers.</p>
-        <div class="project-tech">
-          <span class="tech-tag">UE5</span>
-          <span class="tech-tag">C++</span>
-        </div>
+        <div class="project-tech"><span class="tech-tag">UE5</span><span class="tech-tag">C++</span></div>
       </div>
     </a>
 
-    <a href="https://urielcruzmar.itch.io/obstacleassault" target="_blank" rel="noopener noreferrer" class="project-card reveal" style="transition-delay: 0.1s;">
-      <div class="glow"></div>
-      <div class="project-card-img">
-        <img src="images/portfolio/ObstacleAssault.png" alt="Obstacle Assault" width="600" height="338" loading="lazy">
-      </div>
+    <a href="https://urielcruzmar.itch.io/obstacleassault" target="_blank" rel="noopener noreferrer" class="project-card reveal" style="transition-delay:0.05s;">
+      <div class="project-card-img"><img src="images/portfolio/ObstacleAssault.png" alt="Obstacle Assault" width="600" height="338" loading="lazy"></div>
       <div class="project-card-body">
         <div class="project-cat">Mini Game · UE5</div>
-        <div class="project-name">Obstacle Assault</div>
+        <div class="project-name">Obstacle Assault <span class="arrow">↗</span></div>
         <p class="project-desc">3D low-poly pirate platformer. Navigate treacherous obstacles to collect treasure maps and reach the captain.</p>
-        <div class="project-tech">
-          <span class="tech-tag">UE5</span>
-          <span class="tech-tag">C++</span>
-        </div>
+        <div class="project-tech"><span class="tech-tag">UE5</span><span class="tech-tag">C++</span></div>
       </div>
     </a>
 
     <a href="https://urielcruzmar.itch.io/marsmarine" target="_blank" rel="noopener noreferrer" class="project-card reveal">
-      <div class="glow"></div>
-      <div class="project-card-img">
-        <img src="images/portfolio/MarsMarine.png" alt="Mars Marine" width="600" height="338" loading="lazy">
-      </div>
+      <div class="project-card-img"><img src="images/portfolio/MarsMarine.png" alt="Mars Marine" width="600" height="338" loading="lazy"></div>
       <div class="project-card-body">
         <div class="project-cat">Mini Game · UE5</div>
-        <div class="project-name">Mars Marine</div>
+        <div class="project-name">Mars Marine <span class="arrow">↗</span></div>
         <p class="project-desc">Defend ancient ruins on a fantasy Mars from waves of alien invaders. Survive using strategic positioning and healing pick-ups.</p>
-        <div class="project-tech">
-          <span class="tech-tag">UE5</span>
-          <span class="tech-tag">Blueprints</span>
-        </div>
+        <div class="project-tech"><span class="tech-tag">UE5</span><span class="tech-tag">Blueprints</span></div>
       </div>
     </a>
 
-    <a href="https://www.amazon.es/dp/1837639760" target="_blank" rel="noopener noreferrer" class="project-card reveal" style="transition-delay: 0.1s;">
-      <div class="glow"></div>
-      <div class="project-card-img">
-        <img src="images/portfolio/AVUE5Review.jpg" alt="Architectural Visualization in UE5" width="600" height="338" loading="lazy">
-      </div>
+    <a href="https://www.amazon.es/dp/1837639760" target="_blank" rel="noopener noreferrer" class="project-card reveal" style="transition-delay:0.05s;">
+      <div class="project-card-img"><img src="images/portfolio/AVUE5Review.jpg" alt="Architectural Visualization in UE5" width="600" height="338" loading="lazy"></div>
       <div class="project-card-body">
         <div class="project-cat">Technical Review · Book</div>
-        <div class="project-name">Architectural Visualization in UE5</div>
+        <div class="project-name">Architectural Viz in UE5 <span class="arrow">↗</span></div>
         <p class="project-desc">Technical reviewer for this published book on architectural visualization workflows in Unreal Engine 5.</p>
-        <div class="project-tech">
-          <span class="tech-tag">UE5</span>
-          <span class="tech-tag">ArchViz</span>
-          <span class="tech-tag">Published</span>
-        </div>
+        <div class="project-tech"><span class="tech-tag">UE5</span><span class="tech-tag">ArchViz</span><span class="tech-tag">Published</span></div>
       </div>
     </a>
 
   </div>
-  </div><!-- end container -->
-</section>
 
-<!-- PLUGINS -->
-<section id="plugins">
-  <div class="container">
-  <div class="section-label">05 — Plugins</div>
-  <div class="plugins-grid">
-
+  <div style="margin-top:56px;">
+    <div class="section-label">Plugin</div>
     <div class="plugin-card reveal">
       <div class="plugin-card-img">
-        <a href="https://www.fab.com/listings/bdd629ed-c035-4c87-bef2-46e13150bf66" target="_blank" rel="noopener noreferrer"><img src="images/portfolio/EnvironmentScanner.png" alt="Environment Scanner plugin debug visualization" width="600" height="338" loading="lazy"></a>
+        <a href="https://www.fab.com/listings/bdd629ed-c035-4c87-bef2-46e13150bf66" target="_blank" rel="noopener noreferrer">
+          <img src="images/portfolio/EnvironmentScanner.png" alt="Environment Scanner plugin debug visualization" width="900" height="506" loading="lazy">
+        </a>
       </div>
       <div class="plugin-card-body">
-        <div class="plugin-status">Beta · Live</div>
+        <div class="plugin-status">Beta · Live on Fab</div>
         <div class="plugin-engine">UE 5.7 · C++ Plugin</div>
         <div class="plugin-name">Environment Scanner</div>
         <p class="plugin-tagline">Pure environment detection for character traversal — no Motion Matching dependency, no GAS, no MotionWarping. Just Engine.</p>
@@ -1057,283 +732,111 @@
           <li>Airborne state and lateral wall detection for wall-run</li>
           <li>Guaranteed horizontal normals — warp-target ready out of the box</li>
           <li>Drop-in component or static library call from C++ / Blueprint</li>
-          <li>Full debug visualization — all traces visible in-viewport</li>
         </ul>
         <div class="plugin-footer">
-          <div class="plugin-tags">
-            <span class="tech-tag">C++</span>
-            <span class="tech-tag">Blueprints</span>
-            <span class="tech-tag">Fab</span>
-          </div>
-          <span class="plugin-link-soon"><a href="https://www.fab.com/listings/bdd629ed-c035-4c87-bef2-46e13150bf66" target="_blank" rel="noopener noreferrer" class="contact-link">↗ FAB</a></span>
+          <div class="plugin-tags"><span class="tech-tag">C++</span><span class="tech-tag">Blueprints</span><span class="tech-tag">Fab</span></div>
+          <a href="https://www.fab.com/listings/bdd629ed-c035-4c87-bef2-46e13150bf66" target="_blank" rel="noopener noreferrer" class="plugin-link">↗ View on Fab</a>
         </div>
       </div>
     </div>
-
-    <!-- Future plugins slot -->
-    <div class="plugin-card reveal" style="transition-delay: 0.1s; opacity: 0.4; pointer-events: none;">
-      <div class="plugin-card-placeholder">
-        <span class="plugin-card-placeholder-label">More plugins coming</span>
-      </div>
-      <div class="plugin-card-body">
-        <div class="plugin-engine">UE 5.x · In Development</div>
-        <div class="plugin-name" style="color: var(--muted);">???</div>
-        <p class="plugin-tagline">More tools are in development. Follow for updates.</p>
-        <div class="plugin-footer">
-          <div class="plugin-tags">
-            <span class="tech-tag">TBA</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
-  </div><!-- end container -->
+  </div>
+</section>
+
+<!-- CREDENTIALS -->
+<section id="credentials">
+  <div class="container">
+  <div class="section-label">Credentials</div>
+  <h2 class="section-title">Certifications &amp; <em>Honors</em></h2>
+  <div class="cred-grid">
+    <div class="reveal">
+      <div class="about-focus-label" style="margin-bottom:14px;">Certifications</div>
+      <div class="cred-list">
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text">Unreal Engine Blueprint Game Developer, Online Course</span></div>
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text">Unreal 5.0 C++ Developer: Learn C++ and Make Video Games</span></div>
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text">Unreal Environment Design</span></div>
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text">C++ Fundamentals: Game Programming for Beginners</span></div>
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text">Certificado de Superación del Nivel Básico en Francés (A2)</span></div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:0.1s;">
+      <div class="about-focus-label" style="margin-bottom:14px;">Honors &amp; Awards</div>
+      <div class="cred-list">
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text">5th Place, CyberOlympics 2017</span></div>
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text">Honor Diploma for Academic Merits</span></div>
+      </div>
+
+      <div class="about-focus-label" style="margin:32px 0 14px;">Education</div>
+      <div class="cred-list">
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text"><b>Tokio School</b> — Master in Video Game Programming with Unreal (2020–2022)</span></div>
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text"><b>Tokio School</b> — Advanced Course in Video Game Design (2020–2022)</span></div>
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text"><b>IES Poeta Paco Mollà</b> — Sr. Technician, Multiplatform App Development (2017–2019)</span></div>
+        <div class="cred-row"><span class="cred-row-mark">—</span><span class="cred-row-text"><b>Industrial Organization School</b> — Java FullStack &amp; Angular Course (2019)</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
-  <h2 class="contact-big reveal">
-    Let's build<br><em>something</em><br>great.
-  </h2>
-  <div class="contact-links reveal" style="transition-delay: 0.2s;">
+  <h2 class="contact-title reveal">Let's build something great.</h2>
+  <div class="contact-links reveal" style="transition-delay:0.1s;">
     <a href="https://www.linkedin.com/in/urielcruz/" target="_blank" rel="noopener noreferrer" class="contact-link">↗ LinkedIn</a>
     <a href="https://github.com/urielcruzmar" target="_blank" rel="noopener noreferrer" class="contact-link">↗ GitHub</a>
     <a href="https://urielcruzmar.itch.io/" target="_blank" rel="noopener noreferrer" class="contact-link">↗ itch.io</a>
-    <a href="https://www.fab.com/sellers/YosY" target="_blank" rel="noopener noreferrer" class="contact-link">↗ FAB</a>
+    <a href="https://www.fab.com/sellers/YosY" target="_blank" rel="noopener noreferrer" class="contact-link">↗ Fab</a>
   </div>
-  <a href="mailto:urielcruz@proton.me" class="btn-primary reveal" style="transition-delay: 0.3s; display: inline-flex;">Say Hello →</a>
-  </div><!-- end container -->
+  <a href="mailto:urielcruz@proton.me" class="btn-primary reveal" style="transition-delay:0.15s; display:inline-flex;">Say Hello →</a>
+  </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="container" style="display:flex; justify-content:space-between; align-items:center; padding-top:0; padding-bottom:0;">
-    <div class="footer-copy">© <span id="footer-year">2025</span> Uriel Cruz — Technical Designer UE5</div>
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+    <div class="footer-copy">© <span id="footer-year">2026</span> Uriel Cruz — Senior Technical Designer, UE5</div>
     <div class="footer-copy">Prague · Czech Republic</div>
   </div>
 </footer>
 
 <script>
-  // ── Dynamic year ──
   document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-  // ── Custom cursor (only on non-touch devices) ──
-  const isTouch = window.matchMedia('(hover: none)').matches;
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursor-ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  if (!isTouch) {
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx + 'px';
-      cursor.style.top  = my + 'px';
-    });
-    (function animRing() {
-      rx += (mx - rx) * 0.1;
-      ry += (my - ry) * 0.1;
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
-      requestAnimationFrame(animRing);
-    })();
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.style.transform = 'translate(-50%,-50%) scale(3)';
-        ring.style.transform   = 'translate(-50%,-50%) scale(1.6)';
-        ring.style.borderColor = 'rgba(61,155,255,0.6)';
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-        ring.style.transform   = 'translate(-50%,-50%) scale(1)';
-        ring.style.borderColor = 'rgba(61,155,255,0.35)';
-      });
-    });
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  function openMenu(){
+    hamburger.classList.add('open'); mobileNav.classList.add('open');
+    mobileNav.style.display = 'flex'; document.body.style.overflow = 'hidden';
+    hamburger.setAttribute('aria-expanded','true');
   }
-
-  // ── Hamburger menu ──
-  const hamburger  = document.getElementById('hamburger');
-  const mobileNav  = document.getElementById('mobileNav');
-
-  function openMenu() {
-    hamburger.classList.add('open');
-    mobileNav.classList.add('open');
-    mobileNav.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    hamburger.setAttribute('aria-expanded', 'true');
+  function closeMenu(){
+    hamburger.classList.remove('open'); mobileNav.classList.remove('open');
+    document.body.style.overflow = ''; hamburger.setAttribute('aria-expanded','false');
+    setTimeout(()=>{ if(!mobileNav.classList.contains('open')) mobileNav.style.display=''; },250);
   }
-  function closeMenu() {
-    hamburger.classList.remove('open');
-    mobileNav.classList.remove('open');
-    document.body.style.overflow = '';
-    hamburger.setAttribute('aria-expanded', 'false');
-    setTimeout(() => { if (!mobileNav.classList.contains('open')) mobileNav.style.display = ''; }, 300);
-  }
+  hamburger.addEventListener('click', ()=> hamburger.classList.contains('open') ? closeMenu() : openMenu());
+  document.querySelectorAll('.mobile-nav-link').forEach(l=>l.addEventListener('click',closeMenu));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
 
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.contains('open') ? closeMenu() : openMenu();
-  });
-  document.querySelectorAll('.mobile-nav-link').forEach(link => {
-    link.addEventListener('click', closeMenu);
-  });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-
-  // ── Hero canvas particles — optimized ──
-  const canvas = document.getElementById('hero-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H, particles = [];
-  const isMobile = window.innerWidth < 768;
-  // On mobile: fewer particles, no connecting lines (kills O² cost)
-  const DENSITY   = isMobile ? 18000 : 8000;
-  const MAX_CONN   = isMobile ? 0 : 5;   // max connections per particle
-  const CONN_DIST  = 120;
-
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', () => { resize(); initParticles(); });
-
-  function Particle() {
-    this.reset = function() {
-      this.x       = Math.random() * W;
-      this.y       = Math.random() * H;
-      this.vx      = (Math.random() - 0.5) * 0.3;
-      this.vy      = (Math.random() - 0.5) * 0.3 - 0.1;
-      this.size    = Math.random() * 1.5 + 0.3;
-      this.alpha   = Math.random() * 0.45 + 0.08;
-      this.life    = 0;
-      this.maxLife = Math.random() * 400 + 200;
-    };
-    this.reset();
-    this.life = Math.random() * this.maxLife;
-  }
-
-  function initParticles() {
-    const count = Math.min(Math.floor((W * H) / DENSITY), isMobile ? 40 : 120);
-    particles = Array.from({ length: count }, () => new Particle());
-  }
-  initParticles();
-
-  function drawParticles() {
-    ctx.clearRect(0, 0, W, H);
-    // Draw dots
-    particles.forEach(p => {
-      p.life++;
-      if (p.life > p.maxLife) p.reset();
-      const progress = p.life / p.maxLife;
-      const fade = progress < 0.1 ? progress / 0.1 : progress > 0.85 ? (1 - progress) / 0.15 : 1;
-      p.x += p.vx; p.y += p.vy;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(61,155,255,${p.alpha * fade})`;
-      ctx.fill();
-    });
-    // Draw connections — capped per particle to avoid O² blowup
-    if (MAX_CONN > 0) {
-      for (let i = 0; i < particles.length; i++) {
-        let conns = 0;
-        for (let j = i + 1; j < particles.length && conns < MAX_CONN; j++) {
-          const dx   = particles[i].x - particles[j].x;
-          const dy   = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONN_DIST) {
-            conns++;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(61,155,255,${0.035 * (1 - dist / CONN_DIST)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-    }
-    requestAnimationFrame(drawParticles);
-  }
-  drawParticles();
-
-  // ── Scroll reveal ──
   const reveals = document.querySelectorAll('.reveal');
   document.body.classList.add('js-ready');
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
-    });
-  }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(r => revealObserver.observe(r));
+  const revealObserver = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+  }, { threshold:0.05, rootMargin:'0px 0px -40px 0px' });
+  reveals.forEach(r=>revealObserver.observe(r));
 
-  // ── Active nav link on scroll ──
-  const sections  = document.querySelectorAll('section[id]');
-  const navLinks  = document.querySelectorAll('.nav-links a');
-  const navObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(a => a.classList.remove('active'));
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navObserver = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        navLinks.forEach(a=>a.classList.remove('active'));
         const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
-        if (active) active.classList.add('active');
+        if(active) active.classList.add('active');
       }
     });
-  }, { threshold: 0.35 });
-  sections.forEach(s => navObserver.observe(s));
-
-  // ── Project card glow ──
-  document.querySelectorAll('.project-card').forEach(card => {
-    const glow = card.querySelector('.glow');
-    if (!glow) return;
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      glow.style.left = (e.clientX - rect.left) + 'px';
-      glow.style.top  = (e.clientY - rect.top)  + 'px';
-    });
-  });
-</script>
-
-<!-- Preloader -->
-<style>
-  #preloader {
-    position: fixed; inset: 0; z-index: 9999;
-    background: var(--bg);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 20px;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-  }
-  #preloader.hidden { opacity: 0; visibility: hidden; }
-  .preloader-logo {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 28px; font-weight: 700; letter-spacing: 4px;
-    color: var(--text);
-  }
-  .preloader-logo span { color: var(--accent); }
-  .preloader-bar-wrap {
-    width: 160px; height: 1px;
-    background: var(--border2); position: relative; overflow: hidden;
-  }
-  .preloader-bar {
-    position: absolute; left: -100%; top: 0; height: 100%;
-    width: 100%; background: var(--accent);
-    animation: loadbar 0.9s cubic-bezier(0.4,0,0.2,1) forwards;
-  }
-  .preloader-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--text3);
-  }
-  @keyframes loadbar { from { left: -100%; } to { left: 0%; } }
-</style>
-<div id="preloader">
-  <div class="preloader-logo"><span>[</span>UC<span>]</span></div>
-  <div class="preloader-bar-wrap"><div class="preloader-bar"></div></div>
-  <div class="preloader-label">Loading</div>
-</div>
-<script>
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('preloader').classList.add('hidden');
-    }, 950);
-  });
+  }, { threshold:0.35 });
+  sections.forEach(s=>navObserver.observe(s));
 </script>
 </body>
 </html>
