@@ -1355,7 +1355,7 @@
     b.innerHTML =
       '<div class="gm-boot-inner">' +
       '<div class="gm-boot-top">WHERE THE LAST SPRINT ENDS, THE BACKLOG BEGINS</div>' +
-      '<h1>URIEL CRUZ</h1>' +
+      '<h1>Uriel Cruz</h1>' +
       '<p>Technical Designer · Unreal Engine 5</p>' +
       '<div class="gm-boot-btns">' +
       '<button type="button" class="gm-start" data-mode="game">▶ PLAY</button>' +

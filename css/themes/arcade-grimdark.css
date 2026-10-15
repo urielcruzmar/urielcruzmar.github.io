@@ -24,8 +24,8 @@ html.gm-active, body.gm-active{ background:#0b0a0c; }
 }
 .gm-boot-top{ font-family:var(--font-display); font-size:12px; letter-spacing:3px; color:var(--accent2); max-width:560px; margin:0 auto 28px; line-height:1.8; animation:none; }
 .gm-boot h1{
-  font-family:'UnifrakturCook','Cinzel',serif; font-weight:700; letter-spacing:2px;
-  font-size:clamp(46px,10vw,104px); line-height:1.05; color:var(--accent);
+  font-family:'UnifrakturCook','Cinzel',serif; font-weight:700; letter-spacing:1px;
+  font-size:clamp(46px,9vw,92px); line-height:1.1; color:var(--accent);
   text-shadow:0 0 28px rgba(179,38,46,.65), 0 3px 0 #000;
 }
 .gm-boot p{ font-family:var(--font-display); font-size:13px; letter-spacing:5px; color:var(--ink2); }
@@ -78,8 +78,8 @@ html.gm-active, body.gm-active{ background:#0b0a0c; }
 .gm-toast b{ font-family:var(--font-display); font-weight:700; font-size:11px; letter-spacing:2px; color:var(--accent); }
 .gm-toast span{ font-family:var(--font-body); font-size:13px; color:var(--ink2); }
 .gm-banner b{
-  font-family:'UnifrakturCook','Cinzel',serif; font-weight:700; letter-spacing:2px;
-  font-size:clamp(34px,7vw,76px); color:var(--accent);
+  font-family:'Cinzel','Times New Roman',serif; font-weight:700; letter-spacing:6px;
+  font-size:clamp(26px,5vw,58px); color:var(--accent);
   text-shadow:0 0 22px rgba(179,38,46,.75), 0 3px 0 #000;
 }
 .gm-banner span{
@@ -104,7 +104,7 @@ html.gm-active, body.gm-active{ background:#0b0a0c; }
   box-shadow:0 0 0 1px #000, 0 16px 60px rgba(0,0,0,.8);
 }
 .gm-panel-head{ background:linear-gradient(180deg,#201a13,#14110d); border-bottom:1px solid var(--line2); }
-.gm-panel-head b{ font-family:'UnifrakturCook','Cinzel',serif; font-weight:700; font-size:22px; letter-spacing:1px; color:var(--accent); }
+.gm-panel-head b{ font-family:'Cinzel','Times New Roman',serif; font-weight:700; font-size:16px; letter-spacing:3px; color:var(--accent); }
 .gm-panel-body .section-label{ color:var(--accent2); }
 .gm-panel-body .section-title{ letter-spacing:.5px; }
 .gm-panel-body .btn-primary{ background:linear-gradient(180deg,#a3202d,#6e1620); color:#f3e8c8; border:1px solid var(--accent); }
@@ -120,7 +120,7 @@ html.gm-active, body.gm-active{ background:#0b0a0c; }
 /* pause menu */
 .gm-menu{ background:rgba(6,5,7,.9); }
 .gm-menu-box{ background:linear-gradient(180deg,#1a1611,#0f0d0a); border:3px double var(--line2); box-shadow:0 0 0 1px #000, 0 16px 50px rgba(0,0,0,.8); }
-.gm-menu h3{ font-family:'UnifrakturCook','Cinzel',serif; font-weight:700; font-size:34px; letter-spacing:2px; color:var(--accent); text-shadow:0 0 16px rgba(179,38,46,.6); }
+.gm-menu h3{ font-family:'Cinzel','Times New Roman',serif; font-weight:700; font-size:22px; letter-spacing:6px; color:var(--accent); text-shadow:0 0 16px rgba(179,38,46,.6); }
 .gm-menu li{ font-family:var(--font-display); font-weight:700; font-size:13px; letter-spacing:2px; }
 .gm-menu li.sel{ color:var(--accent); background:rgba(201,162,74,.1); }
 .gm-menu li.sel::before{ content:'✠ '; color:var(--accent2); }
