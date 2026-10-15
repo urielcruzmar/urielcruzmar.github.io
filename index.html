@@ -334,7 +334,7 @@
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/themes/arcade.css">
-<link rel="stylesheet" href="css/themes/arcade-fx.css">
+<link rel="stylesheet" href="css/themes/arcade-game.css">
 </head>
 <body>
 
@@ -677,20 +677,20 @@
   <div class="plugin-card reveal">
     <div class="plugin-card-img">
       <a href="https://www.fab.com/listings/bdd629ed-c035-4c87-bef2-46e13150bf66" target="_blank" rel="noopener noreferrer">
-        <img src="images/portfolio/EnvironmentScanner.png" alt="Environment Scanner plugin debug visualization" width="900" height="506" loading="lazy">
+        <img src="images/portfolio/EnvironmentScanner.png" alt="KD: Traversal Sense plugin debug visualization" width="900" height="506" loading="lazy">
       </a>
     </div>
     <div class="plugin-card-body">
       <div class="plugin-status">Beta · Live on Fab</div>
-      <div class="plugin-engine">UE 5.7 · C++ Plugin</div>
-      <div class="plugin-name">Environment Scanner</div>
-      <p class="plugin-tagline">Pure environment detection for character traversal — no Motion Matching dependency, no GAS, no MotionWarping. Just Engine.</p>
+      <div class="plugin-engine">UE 5.7 – 5.8 · Windows · Plugin</div>
+      <div class="plugin-name">KD: Traversal Sense</div>
+      <p class="plugin-tagline">A lightweight, pure environment detection engine that gives a character's movement system full spatial awareness. Sensing only: no movement logic, no animation code, no dependencies.</p>
       <ul class="plugin-features">
-        <li>Front &amp; back ledge detection with top-surface snapping</li>
-        <li>Obstacle classification: Reachable, Gap, Slide, Unreachable</li>
-        <li>Airborne state and lateral wall detection for wall-run</li>
-        <li>Guaranteed horizontal normals — warp-target ready out of the box</li>
-        <li>Drop-in component or static library call from C++ / Blueprint</li>
+        <li>Single-call query returning ledges, obstacle dimensions, wall vectors and airborne state</li>
+        <li>Top-surface snap: ledge targets land on the real top surface, not on the wall face</li>
+        <li>Guaranteed horizontal normals, ready to feed Motion Warping</li>
+        <li>Plugs into Motion Matching, GAS, custom movement systems or Blueprints</li>
+        <li>Part of the Kinetic Dynamics (KD) locomotion ecosystem</li>
       </ul>
       <div class="plugin-footer">
         <div class="plugin-tags"><span class="tech-tag">C++</span><span class="tech-tag">Blueprints</span><span class="tech-tag">Fab</span></div>
@@ -844,6 +844,6 @@
   }, { threshold:0.35 });
   sections.forEach(s=>navObserver.observe(s));
 </script>
-<script src="js/themes/arcade-fx.js"></script>
+<script src="js/themes/arcade-game.js"></script>
 </body>
 </html>
