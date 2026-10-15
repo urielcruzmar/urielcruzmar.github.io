@@ -70,7 +70,8 @@
     boss: function () { beep([98, 98, 123, 98], 0.14, 0.05, 'sawtooth'); },
     win: function () { beep([523, 659, 784, 1047, 784, 1047, 1319], 0.09, 0.05); },
     power: function () { beep([659, 784, 988, 1319], 0.06); },
-    talk: function () { beep([520, 620], 0.04, 0.02); }
+    talk: function () { beep([520, 620], 0.04, 0.02); },
+    splash: function () { beep([300, 220, 340, 200], 0.04, 0.03, 'sawtooth'); }
   };
   var ROOTS = [57, 55, 53, 52, 57, 55, 50];
   var LEAD = [0, 2, 4, 2, 3, 1, 2, 0, 4, 3, 2, 1, 2, 4, 5, 3];
@@ -416,9 +417,7 @@
       p.doorY = (p.y + p.h) * TS;
       solids.push({ x: p.px, y: p.py, w: p.pw, h: p.ph - 6 });
     });
-    PONDS.forEach(function (r) {
-      solids.push({ x: r[0] * TS, y: r[1] * TS, w: (r[2] - r[0] + 1) * TS, h: (r[3] - r[1] + 1) * TS });
-    });
+    /* ponds are not solid: the player swims across them with a float ring */
 
     /* trees: seeded scatter that avoids paths, buildings, ponds, coins and the spawn */
     var trees = [];
@@ -672,7 +671,7 @@
     var mag = Math.sqrt(dx * dx + dy * dy);
     if (mag > 0.15) {
       if (mag > 1) { dx /= mag; dy /= mag; mag = 1; }
-      var sp = 3.2 * dt;
+      var sp = 3.2 * dt * (P.swim ? 0.65 : 1);
       var nx = P.x + dx * sp, ny = P.y + dy * sp;
       if (!solidAt(nx, P.y)) P.x = nx;
       if (!solidAt(P.x, ny)) P.y = ny;
@@ -682,6 +681,19 @@
       P.ft += dt;
       if (P.ft > 7) { P.ft = 0; P.frame = 1 - P.frame; }
     } else P.frame = 0;
+    /* swimming */
+    var wasSwim = P.swim;
+    var wtx = Math.floor(P.x / TS), wty = Math.floor((P.y - 2) / TS);
+    P.swim = wtx >= 0 && wty >= 0 && wtx < WT && wty < HT && !!world.pondMap[wty * WT + wtx];
+    if (P.swim !== wasSwim) {
+      burst(P.x, P.y - 4, ['#8fb4ee', '#ecebf3', '#3a5c91'], 14, 3);
+      SFX.splash();
+      if (P.swim) { unlock('swim', 'SPLASH!', 'Took a swim with the float ring.'); P.rip = 0; }
+    }
+    if (P.swim && mag > 0.15) {
+      P.rip = (P.rip || 0) + dt;
+      if (P.rip > 14) { P.rip = 0; burst(P.x, P.y - 2, ['#8fb4ee', '#ecebf3'], 3, 1.2, 3); }
+    }
     if (P.inv > 0) P.inv -= dt;
     if (godMode) P.inv = 10;
     if (P.cd > 0) P.cd -= dt;
@@ -994,12 +1006,32 @@
     }
     list.push({ y: P.y, f: function () {
       var x = Math.round(P.x - cam.x), y = Math.round(P.y - cam.y);
-      g.fillStyle = 'rgba(0,0,0,.3)'; g.fillRect(x - 11, y - 3, 22, 6);
+      var swim = P.swim, bobY = swim ? Math.round(Math.sin(ts / 230) * 2) : 0;
+      if (swim) {
+        /* ripples around the swimmer */
+        var rr = (ts / 40) % 16;
+        g.strokeStyle = 'rgba(236,235,243,.35)'; g.lineWidth = 2;
+        g.strokeRect(x - 14 - rr / 2, y - 10 - rr / 4, 28 + rr, 12 + rr / 2);
+        g.strokeStyle = 'rgba(236,235,243,.18)';
+        g.strokeRect(x - 20 - rr / 2, y - 14 - rr / 4, 40 + rr, 20 + rr / 2);
+      } else {
+        g.fillStyle = 'rgba(0,0,0,.3)'; g.fillRect(x - 11, y - 3, 22, 6);
+      }
       if (P.inv <= 0 || Math.floor(ts / 70) % 2) {
-        g.save(); g.translate(x, y - 30);
+        g.save(); g.translate(x - 16, y - 30 + bobY + (swim ? 8 : 0));
         if (P.flip) { g.translate(32, 0); g.scale(-1, 1); }
-        g.drawImage(PLAYER_FR[P.frame], 0, 0);
+        if (swim) g.drawImage(PLAYER_FR[P.frame], 0, 0, 32, 20, 0, 0, 32, 20); // head and torso only
+        else g.drawImage(PLAYER_FR[P.frame], 0, 0);
         g.restore();
+        if (swim) {
+          /* float ring (red and white striped) at the waist */
+          var ry = y - 10 + bobY;
+          g.fillStyle = '#13141f'; g.fillRect(x - 17, ry - 2, 34, 12);
+          g.fillStyle = '#e0607e'; g.fillRect(x - 15, ry, 30, 8);
+          g.fillStyle = '#ecebf3';
+          for (var sx2 = -15; sx2 < 15; sx2 += 10) g.fillRect(x + sx2 + 5, ry, 5, 8);
+          g.fillStyle = 'rgba(255,255,255,.35)'; g.fillRect(x - 13, ry + 1, 26, 2);
+        }
       }
       if (P.sh > 0) { g.strokeStyle = '#7aa2ff'; g.lineWidth = 3; g.strokeRect(x - 20, y - 40, 40, 44); }
     } });
