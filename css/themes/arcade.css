@@ -1,0 +1,111 @@
+/* THEME: ARCADE (calm) — pixel-game character with a muted, readable palette.
+   Pixel font only on headings; body and labels stay in Inter / JetBrains Mono. */
+:root{
+  --bg:#13141f; --surface:#1a1c2a; --surface2:#222536;
+  --line:#2c3047; --line2:#434a6b;
+  --ink:#ecebf3; --ink2:#b3b7cc; --ink3:#868ca8;
+  --accent:#6fd3c9; --accent2:#f0a35e;
+  --font-display:'Press Start 2P', monospace;
+  --font-body:'Inter', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+}
+body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(111,211,201,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(111,211,201,.035) 1px, transparent 1px);
+  background-size:32px 32px;
+}
+
+nav{ background:rgba(19,20,31,.94); border-bottom:2px solid var(--line2); }
+.nav-logo{ font-size:12px; line-height:1; }
+.nav-logo em{ font-style:normal; color:var(--accent); }
+.nav-links a:hover, .nav-links a.active{ color:var(--accent); border-color:var(--accent); }
+.nav-hamburger span{ height:2px; }
+.nav-mobile-overlay{ background:rgba(19,20,31,.98); }
+.nav-mobile-overlay a{ font-size:15px; }
+
+#hero{ padding:88px 0 64px; }
+.hero-kicker{ color:var(--accent2); }
+.hero-kicker::before{ content:'> '; }
+.hero-kicker::after{ content:'_'; margin-left:2px; animation:blink 1.1s steps(2) infinite; }
+@keyframes blink{ 50%{ opacity:0; } }
+.hero-name{
+  font-size:clamp(24px,4.6vw,48px); line-height:1.3; letter-spacing:0;
+  text-shadow:3px 3px 0 var(--line2);
+}
+.hero-role{ font-style:normal; font-family:var(--font-body); font-weight:500; font-size:clamp(17px,2vw,22px); color:var(--accent); }
+.hero-rule{ height:4px; background:repeating-linear-gradient(90deg, var(--line2) 0 12px, transparent 12px 20px); }
+.hero-meta-item a{ color:var(--accent); }
+.hero-desc{ color:var(--ink2); }
+
+.btn-primary{
+  background:var(--accent); color:#10212a; font-weight:600;
+  border:2px solid var(--accent); box-shadow:4px 4px 0 var(--line2);
+  transition:transform .08s, box-shadow .08s, background .15s;
+}
+.btn-primary:hover{ background:#8be0d7; transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--line2); }
+.btn-primary:active{ transform:translate(3px,3px); box-shadow:1px 1px 0 var(--line2); }
+.btn-secondary{ border:2px solid var(--line2); color:var(--ink); }
+.btn-secondary:hover{ border-color:var(--accent); color:var(--accent); }
+
+section{ border-top:2px solid var(--line); }
+.section-label{ color:var(--accent2); }
+.section-label::before{ content:'LVL ▸ '; color:var(--ink3); }
+.section-title{ font-size:clamp(15px,2.2vw,22px); line-height:1.6; }
+.section-title em{ font-style:normal; color:var(--accent); }
+
+.focus-tag, .skill-tag{
+  border:1px solid var(--line2); background:var(--surface2); color:var(--ink);
+}
+.tech-tag{ border-color:var(--line2); color:var(--ink2); }
+
+.stat-block{ gap:6px; background:transparent; border:none; }
+.stat{ background:var(--surface); border:2px solid var(--line2); box-shadow:3px 3px 0 var(--line); }
+.stat-num{ font-size:22px; color:var(--accent); }
+.stat-num em{ font-style:normal; color:var(--accent2); }
+.lang-level{ color:var(--accent); }
+.lang-level.dim{ color:var(--ink3); }
+
+.timeline::before{ width:3px; left:-1px; background:repeating-linear-gradient(to bottom, var(--line2) 0 10px, transparent 10px 16px); }
+.exp-dot{ border-radius:0; width:13px; height:13px; left:-32px; top:5px; background:var(--bg); border:3px solid var(--line2); }
+.exp-item.is-current .exp-dot{ background:var(--accent); border-color:var(--accent); }
+.exp-date{ color:var(--accent); }
+.exp-company{ font-size:15px; line-height:1.5; }
+.exp-company a:hover{ color:var(--accent); border-color:var(--accent); }
+.exp-badge{ background:var(--accent); color:#10212a; font-weight:600; }
+.exp-badge.outline{ background:transparent; color:var(--accent2); border:1px solid var(--accent2); }
+.exp-bullets li::before{ content:'▸'; color:var(--accent2); }
+.exp-project em{ color:var(--accent2); }
+.exp-video{ border:2px solid var(--line2); box-shadow:4px 4px 0 var(--line); }
+.bg-block{ border:2px dashed var(--line2); }
+
+.skills-grid{ gap:10px; background:transparent; border:none; }
+.skill-card{ border:2px solid var(--line2); box-shadow:3px 3px 0 var(--line); }
+.skill-card-title{ font-size:11px; line-height:1.7; color:var(--accent); }
+
+.projects-grid{ gap:20px; background:transparent; border:none; }
+.project-card, .plugin-card{
+  border:2px solid var(--line2); box-shadow:5px 5px 0 var(--line);
+  transition:transform .1s, box-shadow .1s, border-color .15s;
+}
+.project-card:hover{ transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--line); border-color:var(--accent); background:var(--surface); }
+.project-card-img, .plugin-card-img{ border-bottom:2px solid var(--line2); }
+.project-name{ font-size:12px; line-height:1.6; }
+.plugin-name{ font-size:15px; line-height:1.6; }
+.plugin-status{ background:var(--accent); color:#10212a; font-weight:600; }
+.plugin-features li::before{ content:'▸'; color:var(--accent2); }
+.plugin-footer{ border-top:2px dashed var(--line2); }
+.plugin-link{ color:var(--accent); }
+
+.cred-row{ border-bottom:1px dashed var(--line2); }
+.cred-row-mark{ color:var(--accent2); }
+
+#contact{ background:var(--surface); border-top:2px solid var(--line2); }
+.contact-title{ font-style:normal; font-size:clamp(18px,3.4vw,32px); line-height:1.5; }
+.contact-link:hover{ color:var(--accent); border-color:var(--accent); }
+footer{ border-top:2px solid var(--line2); }
+
+@media (prefers-reduced-motion: reduce){
+  .hero-kicker::after{ animation:none; }
+}
