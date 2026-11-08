@@ -401,7 +401,7 @@
     { place: 'experience', name: 'CHRONICLER', dx: -76, dy: 36, map: robe('#5a1f26'),
       pages: ['These halls record his campaigns. Most recently: GRIP Studios, on Tomb Raider: Legacy of Atlantis and unannounced AAA titles.',
               'Before that: DALOAR Studios (Motion Matching, parkour and GAS), Orengi Games and HechicerIA.',
-              'Now he forges his own games at Visual Dynamics Studio.'] },
+              'Now he works on his own as an independent developer, forging his own games and tools.'] },
     { place: 'skills', name: 'ARTIFICER', dx: -76, dy: 36, map: robe('#3b4a5c'),
       pages: ['In the forge-shrine, tools become shipped features: Unreal Engine 4/5, C++, Blueprints, plus Unity and C# when needed.',
               'Key tech: GAS, Motion Matching, AI Behavior Trees, networking and replication.',
