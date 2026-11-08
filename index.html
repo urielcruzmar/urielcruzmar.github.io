@@ -683,16 +683,16 @@
       </a>
     </div>
     <div class="plugin-card-body">
-      <div class="plugin-status">Beta · Live on Fab</div>
-      <div class="plugin-engine">UE 5.7 – 5.8 · Windows · Plugin</div>
+      <div class="plugin-status">v2.1 · Live on Fab</div>
+      <div class="plugin-engine">UE 5.7 – 5.8 · Windows · C++ Plugin</div>
       <div class="plugin-name">KD: Traversal Sense</div>
-      <p class="plugin-tagline">A lightweight, pure environment detection engine that gives a character's movement system full spatial awareness. Sensing only: no movement logic, no animation code, no dependencies.</p>
+      <p class="plugin-tagline">A lightweight, pure environment detection plugin that gives a character's movement system full spatial awareness. One call returns measured ledges, overhangs, walls, drops and gaps. Sensing only: no movement logic, no animation code, no dependencies.</p>
       <ul class="plugin-features">
-        <li>Single-call query returning ledges, obstacle dimensions, wall vectors and airborne state</li>
-        <li>Top-surface snap: ledge targets land on the real top surface, not on the wall face</li>
-        <li>Guaranteed horizontal normals, ready to feed Motion Warping</li>
-        <li>Plugs into Motion Matching, GAS, custom movement systems or Blueprints</li>
-        <li>Part of the Kinetic Dynamics (KD) locomotion ecosystem</li>
+        <li>Ledge height, depth and landing floor, plus low overhangs to slide under, walls to run along or jump off, drops and gaps</li>
+        <li>Parkour queries added in 2.1: wall face, drop edge, gap, ground slope, ledge at a given position and ledge extent for shimmy</li>
+        <li>Horizontal normals and top-surface snapping, ready to feed Motion Warping, Motion Matching, GAS or custom movement</li>
+        <li>Works with any pawn, handles moving platforms, and stays cheap: around 30 traces for a typical vault scan</li>
+        <li>Shared Scan Profile Data Assets, debug drawing, C++ source and documentation included</li>
       </ul>
       <div class="plugin-footer">
         <div class="plugin-tags"><span class="tech-tag">C++</span><span class="tech-tag">Blueprints</span><span class="tech-tag">Fab</span></div>
